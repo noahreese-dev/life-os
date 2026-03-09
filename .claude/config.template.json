@@ -1,0 +1,8 @@
+{
+  "lifeos_root": "/path/to/your/life-os",
+  "owner": "Your Name",
+  "instance": "primary",
+  "telegram_bot_name": "@YourBotName",
+  "google_tasks_list_id": "YOUR_TASK_LIST_ID",
+  "invoice_sheet_id": "YOUR_SHEET_ID"
+}

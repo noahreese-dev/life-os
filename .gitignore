@@ -1,0 +1,67 @@
+# ============================================
+# Life-OS .gitignore
+# Framework (shared) vs Instance (private)
+# ============================================
+
+# --- PRIVATE: Personal content (never syncs) ---
+Days/*.md
+!Days/README.md
+briefings/*.md
+briefings/*.html
+!briefings/README.md
+CLAUDE.md
+CHIEF-OF-STAFF.md
+STATUS.md
+WEEKLY-LOG.md
+PRIORITIES.md
+ACCOUNTING.md
+OCTOPUS.md
+THE-DESCENT.md
+MEMORIES.md
+*.DIALOGUES.md
+*.VISION*.md
+*.html
+NEGOTIATION-SKILLS.md
+DEALCRAFT.md
+BOTTLENECK.md
+AGENT-BTD.md
+GCH.md
+
+# --- PRIVATE: Personal agents (instance-specific projects) ---
+.claude/agents/daily-ops.md
+.claude/agents/personas.md
+.claude/agents/meta.md
+
+# --- PRIVATE: Machine-specific config ---
+.claude/config.local.json
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/telegram/.env
+.claude/telegram/state.json
+.claude/telegram/queue.json
+.claude/telegram/bot.log
+.claude/autonomous/logs/
+
+# --- PRIVATE: Node dependencies (reinstall per machine) ---
+node_modules/
+.claude/telegram/node_modules/
+
+# --- PRIVATE: Transfer staging ---
+transfer/
+
+# --- PRIVATE: Project metadata with personal content ---
+# Add your project folders here following this pattern:
+# ProjectName/*.md
+# !ProjectName/README.md
+# This ignores personal assessment/about files while keeping template READMEs
+
+# --- PRIVATE: Agent research ---
+# agent-research/
+
+# --- PRIVATE: OS/IDE artifacts ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
