@@ -10,11 +10,25 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const QUEUE_FILE = join(__dirname, "queue.json");
+const LAST_ID_FILE = join(__dirname, ".last_processed_id");
+
+async function getLastProcessedId() {
+  try {
+    return (await readFile(LAST_ID_FILE, "utf-8")).trim();
+  } catch {
+    return "";
+  }
+}
 
 async function checkQueue() {
   try {
     const data = JSON.parse(await readFile(QUEUE_FILE, "utf-8"));
     if (data.status === "pending") {
+      const lastId = await getLastProcessedId();
+      if (data.id === lastId) return; // Already processed by another watcher
+      // Mark as seen immediately to prevent duplicates
+      const { writeFileSync } = await import("fs");
+      writeFileSync(LAST_ID_FILE, data.id);
       console.log(`QUEUE_MESSAGE|${data.id}|${data.message}`);
       process.exit(0);
     }

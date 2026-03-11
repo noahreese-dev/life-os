@@ -50,10 +50,33 @@ node_modules/
 transfer/
 
 # --- PRIVATE: Project metadata with personal content ---
-# Add your project folders here following this pattern:
-# ProjectName/*.md
-# !ProjectName/README.md
-# This ignores personal assessment/about files while keeping template READMEs
+AFF/
+Garage33/
+Hardware\ Ad\ +/
+Finance\ WIth\ Dan/
+ImageDesignAPP/
+IntelligenceMastersWebsite/
+UltrawashAPP/
+Agent-BTD/
+IDEAS/
+
+# --- PRIVATE: Personal research & campaigns ---
+hamilton-campaign/
+toronto-move/
+meditations/
+LOS.pdf
+NOAH-REESE-VISION.md
+IMAM-ALI-PERSONA-RESEARCH.md
+IMAM-HASSAN-PERSONA-RESEARCH.md
+VISION-SCAN-001.md
+bash_aliases.txt
+transfer.zip
+desktop.ini
+.claude-backup-*/
+.claude/telegram/.last_processed_id
+.claude/telegram/test-*.js
+.claude/telegram/test-*.ps1
+.claude/config.ps1
 
 # --- PRIVATE: Agent research ---
 # agent-research/
