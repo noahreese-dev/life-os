@@ -21,6 +21,7 @@ MEMORIES.md
 *.DIALOGUES.md
 *.VISION*.md
 *.html
+!Agent-BTD/**/*.html
 NEGOTIATION-SKILLS.md
 DEALCRAFT.md
 BOTTLENECK.md
@@ -57,7 +58,7 @@ Finance\ WIth\ Dan/
 ImageDesignAPP/
 IntelligenceMastersWebsite/
 UltrawashAPP/
-Agent-BTD/
+# Agent-BTD: game code tracked; build artifacts via Agent-BTD/.gitignore
 IDEAS/
 
 # --- PRIVATE: Personal research & campaigns ---
