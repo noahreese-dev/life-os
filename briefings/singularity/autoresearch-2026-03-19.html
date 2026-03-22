@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoResearch Cycle #7 -- Mar 19, 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+
+  .header { background: linear-gradient(135deg, #161b22 0%, #0d1117 100%); border-bottom: 1px solid #30363d; padding: 24px 20px; text-align: center; }
+  .header h1 { color: #58a6ff; font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; }
+  .header .subtitle { color: #8b949e; font-size: 0.85rem; }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 20px; }
+
+  .score-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: center; }
+  .score-row { display: flex; justify-content: center; align-items: center; gap: 24px; margin: 12px 0; }
+  .score-box { font-size: 2.5rem; font-weight: 700; }
+  .score-before { color: #f85149; }
+  .score-arrow { color: #8b949e; font-size: 1.5rem; }
+  .score-after { color: #58a6ff; }
+  .score-label { font-size: 0.8rem; color: #8b949e; margin-top: 2px; }
+  .score-note { font-size: 0.85rem; color: #8b949e; margin-top: 8px; }
+
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .card h2 { color: #58a6ff; font-size: 1.1rem; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+  .card h3 { color: #e6edf3; font-size: 0.95rem; margin: 12px 0 6px 0; }
+
+  .fix-item { background: #0d1117; border-left: 3px solid #f0883e; padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 8px 0; }
+  .fix-item.critical { border-left-color: #f85149; }
+  .fix-item.pass { border-left-color: #3fb950; }
+  .fix-title { color: #e6edf3; font-weight: 600; font-size: 0.95rem; }
+  .fix-detail { color: #8b949e; font-size: 0.85rem; margin-top: 4px; }
+
+  .status-table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+  .status-table th { text-align: left; color: #8b949e; font-size: 0.75rem; text-transform: uppercase; padding: 6px 8px; border-bottom: 1px solid #21262d; }
+  .status-table td { padding: 6px 8px; font-size: 0.85rem; border-bottom: 1px solid #21262d; }
+  .status-table td:first-child { color: #e6edf3; font-weight: 500; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+  .badge-pass { background: #0d2818; color: #3fb950; }
+  .badge-fail { background: #3d1418; color: #f85149; }
+  .badge-warn { background: #341a04; color: #f0883e; }
+  .badge-wait { background: #1c2333; color: #58a6ff; }
+
+  .component-bar { display: flex; align-items: center; margin: 4px 0; }
+  .component-name { flex: 0 0 180px; font-size: 0.8rem; color: #8b949e; }
+  .component-track { flex: 1; height: 8px; background: #21262d; border-radius: 4px; overflow: hidden; }
+  .component-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .component-score { flex: 0 0 50px; text-align: right; font-size: 0.8rem; color: #e6edf3; }
+
+  .question-item { background: #0d1117; padding: 10px 14px; border-radius: 8px; margin: 6px 0; font-size: 0.85rem; }
+  .question-item::before { content: "?"; display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center; background: #1c2333; color: #58a6ff; border-radius: 50%; font-size: 0.75rem; font-weight: 700; margin-right: 8px; }
+
+  .priority-item { padding: 6px 0; font-size: 0.85rem; border-bottom: 1px solid #21262d; }
+  .priority-item:last-child { border: none; }
+  .priority-num { color: #58a6ff; font-weight: 700; margin-right: 6px; }
+
+  .footer { text-align: center; padding: 20px; color: #484f58; font-size: 0.75rem; }
+
+  .chain { background: #0d1117; padding: 12px 16px; border-radius: 8px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.8rem; line-height: 1.8; color: #8b949e; margin: 8px 0; overflow-x: auto; }
+  .chain .line { padding: 2px 0; }
+  .chain .highlight { color: #f85149; }
+  .chain .fix { color: #3fb950; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>AutoResearch Cycle #7</h1>
+  <div class="subtitle">March 19, 2026 -- 5:00 PM -- Opus 4.6 (Manual Invocation)</div>
+</div>
+
+<div class="container">
+
+  <!-- Score Card -->
+  <div class="score-card">
+    <div style="color: #8b949e; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;">Life-OS Rating</div>
+    <div class="score-row">
+      <div>
+        <div class="score-box score-before">58</div>
+        <div class="score-label">Claimed</div>
+      </div>
+      <div class="score-arrow">&rarr;</div>
+      <div>
+        <div class="score-box score-after">57</div>
+        <div class="score-label">Honest</div>
+      </div>
+    </div>
+    <div class="score-note">Score dropped -1 because AutoResearch was silently broken for 18+ hours while appearing healthy. Fix deployed, awaiting first scheduled run at 18:30.</div>
+  </div>
+
+  <!-- What Happened -->
+  <div class="card">
+    <h2>What Happened</h2>
+    <div class="fix-item critical">
+      <div class="fix-title">Fix #32: AutoResearch Loop Dead for 18+ Hours</div>
+      <div class="fix-detail">
+        The previous Cycle #5 (Fix #29) rewrote autoresearch-loop.ps1 to use <code>Start-Process -FilePath "claude"</code> for timeout control. This broke every subsequent run because <code>claude</code> on Windows is a <code>.ps1</code> shim, not a Win32 <code>.exe</code>. <code>Start-Process</code> cannot execute it. 9 consecutive runs failed (Mar 18 22:30 through Mar 19 16:30), all producing the same error: <em>"%1 is not a valid Win32 application."</em>
+      </div>
+    </div>
+    <div class="fix-item pass">
+      <div class="fix-title">Fix: Replaced Start-Process with Start-Job</div>
+      <div class="fix-detail">
+        <code>Start-Job</code> runs a background PowerShell worker that resolves <code>claude.ps1</code> correctly. Timeout via <code>Wait-Job -Timeout</code>. Applied to both <code>autoresearch-loop.ps1</code> and <code>overnight-ralph.ps1</code>. Verified with 3 independent tests.
+      </div>
+    </div>
+  </div>
+
+  <!-- Root Cause Chain -->
+  <div class="card">
+    <h2>Root Cause Chain</h2>
+    <div class="chain">
+      <div class="line">Fix #29 (Cycle #5) rewrote autoresearch-loop.ps1</div>
+      <div class="line">&nbsp;&nbsp;<span class="highlight">&rarr; Used Start-Process -FilePath "claude"</span></div>
+      <div class="line">&nbsp;&nbsp;&rarr; "claude" is a .ps1 shim, not a .exe</div>
+      <div class="line">&nbsp;&nbsp;<span class="highlight">&rarr; Start-Process fails: "%1 is not a valid Win32 application"</span></div>
+      <div class="line">&nbsp;&nbsp;&rarr; 9 consecutive failures, 0 bytes useful output</div>
+      <div class="line">&nbsp;&nbsp;<span class="highlight">&rarr; exit 0 masks failure -- Task Scheduler shows "healthy"</span></div>
+      <div class="line">&nbsp;&nbsp;&rarr; Self-improvement loop silently dead for 18+ hours</div>
+      <div class="line">&nbsp;</div>
+      <div class="line"><span class="fix">Fix #32: Start-Job runs background PowerShell</span></div>
+      <div class="line"><span class="fix">&nbsp;&nbsp;&rarr; Resolves claude.ps1 correctly</span></div>
+      <div class="line"><span class="fix">&nbsp;&nbsp;&rarr; Wait-Job -Timeout provides timeout control</span></div>
+      <div class="line"><span class="fix">&nbsp;&nbsp;&rarr; Verified: 3 independent tests passed</span></div>
+    </div>
+  </div>
+
+  <!-- Verification -->
+  <div class="card">
+    <h2>Verification</h2>
+    <table class="status-table">
+      <tr><th>Test</th><th>Result</th></tr>
+      <tr><td>Start-Job + claude --version</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>Start-Job + claude -p (simple prompt)</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>Invoke-ClaudeWithTimeout function</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>Dry run of rewritten script</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>Confirmed Start-Process reproduces error</td><td><span class="badge badge-pass">PASS</span></td></tr>
+      <tr><td>First scheduled run (18:30)</td><td><span class="badge badge-wait">PENDING</span></td></tr>
+    </table>
+  </div>
+
+  <!-- Component Breakdown -->
+  <div class="card">
+    <h2>Score Breakdown</h2>
+
+    <div class="component-bar">
+      <div class="component-name">Architecture</div>
+      <div class="component-track"><div class="component-fill" style="width: 80%; background: #3fb950;"></div></div>
+      <div class="component-score">12/15</div>
+    </div>
+    <div class="component-bar">
+      <div class="component-name">Autonomous Uptime</div>
+      <div class="component-track"><div class="component-fill" style="width: 80%; background: #f0883e;"></div></div>
+      <div class="component-score">12/15</div>
+    </div>
+    <div class="component-bar">
+      <div class="component-name">Metrics Loop</div>
+      <div class="component-track"><div class="component-fill" style="width: 20%; background: #f85149;"></div></div>
+      <div class="component-score">3/15</div>
+    </div>
+    <div class="component-bar">
+      <div class="component-name">24/7 Operation</div>
+      <div class="component-track"><div class="component-fill" style="width: 73%; background: #f0883e;"></div></div>
+      <div class="component-score">11/15</div>
+    </div>
+    <div class="component-bar">
+      <div class="component-name">Cross-Device</div>
+      <div class="component-track"><div class="component-fill" style="width: 90%; background: #3fb950;"></div></div>
+      <div class="component-score">9/10</div>
+    </div>
+    <div class="component-bar">
+      <div class="component-name">CEO Impact</div>
+      <div class="component-track"><div class="component-fill" style="width: 40%; background: #f0883e;"></div></div>
+      <div class="component-score">6/15</div>
+    </div>
+    <div class="component-bar">
+      <div class="component-name">Revenue</div>
+      <div class="component-track"><div class="component-fill" style="width: 27%; background: #f85149;"></div></div>
+      <div class="component-score">4/15</div>
+    </div>
+  </div>
+
+  <!-- Task Scheduler Status -->
+  <div class="card">
+    <h2>Task Scheduler Audit (16 tasks)</h2>
+    <table class="status-table">
+      <tr><th>Task</th><th>Last Run</th><th>Status</th></tr>
+      <tr><td>ClaudeCodeAutoUpdate</td><td>05:00</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>MorningBriefing</td><td>09:48</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>EmailMonitor</td><td>09:48</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>DeployCheck</td><td>13:00</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>NightlyAccountability</td><td>22:00 (Mar 18)</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>WeeklyLogReminder</td><td>Mar 16</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>SupabaseKeepAlive</td><td>Mar 16</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>ICSReminder</td><td>10:00</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>SleepNudge</td><td>23:00 (Mar 18)</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>PhoneFreeMorning</td><td>09:48</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>MiddayCheckin</td><td>14:52</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>LeaveHouseNudge</td><td>11:00</td><td><span class="badge badge-pass">OK</span></td></tr>
+      <tr><td>AutoResearch</td><td>16:30</td><td><span class="badge badge-warn">FIXED</span> Was silently broken</td></tr>
+      <tr><td>Claw3dCheck</td><td>09:48</td><td><span class="badge badge-warn">TIMEOUT</span> Batch overload</td></tr>
+      <tr><td>WeeklyDigest</td><td>Mar 13</td><td><span class="badge badge-wait">Fri</span></td></tr>
+      <tr><td>TelegramBot</td><td>Mar 12</td><td><span class="badge badge-fail">BROKEN</span> Manual only</td></tr>
+    </table>
+  </div>
+
+  <!-- Processes -->
+  <div class="card">
+    <h2>Running Processes</h2>
+    <table class="status-table">
+      <tr><th>Process</th><th>PID</th><th>Uptime</th><th>Status</th></tr>
+      <tr><td>Telegram Bot</td><td>111212</td><td>38+ hours</td><td><span class="badge badge-pass">Running</span></td></tr>
+      <tr><td>Remote Control</td><td>75604</td><td>27+ hours</td><td><span class="badge badge-pass">Running</span></td></tr>
+      <tr><td>Claude --resume (x2)</td><td>74088, 108020</td><td>42+ hours</td><td><span class="badge badge-pass">Running</span></td></tr>
+      <tr><td>Astro Dev (Garage33)</td><td>46716, 57116</td><td>42+ hours</td><td><span class="badge badge-pass">Running</span></td></tr>
+      <tr><td>claude config get</td><td>71852</td><td>25+ hours</td><td><span class="badge badge-warn">Mild zombie</span></td></tr>
+    </table>
+  </div>
+
+  <!-- Questions for CEO -->
+  <div class="card">
+    <h2>Questions for CEO</h2>
+    <div class="question-item">WeeklyDigest runs tomorrow (Fri 7pm). Budget is $1.00 -- enough? Or bump to $2.00 given it reads 7 days of logs?</div>
+    <div class="question-item">Telegram bot Task Scheduler entry is permanently broken (result 1 since Mar 12). Bot runs fine manually. Should I create a health-check script that auto-restarts it, or leave it manual?</div>
+    <div class="question-item">The claude config get process (PID 71852) has been alive 25+ hours. Safe to kill? It's not caught by zombie cleanup because it's not a claude -p process.</div>
+  </div>
+
+  <!-- Next Priorities -->
+  <div class="card">
+    <h2>Next Cycle Priorities</h2>
+    <div class="priority-item"><span class="priority-num">1.</span> Validate AutoResearch fix at 18:30 scheduled run -- confirm AUTORESEARCH_SUMMARY line in logs</div>
+    <div class="priority-item"><span class="priority-num">2.</span> Validate overnight Ralph tonight -- should be first successful headless overnight execution</div>
+    <div class="priority-item"><span class="priority-num">3.</span> Metrics loop (3/15) -- biggest scoring gap. Need CEO scorecard data or auto-collection</div>
+    <div class="priority-item"><span class="priority-num">4.</span> Add output validation to autoresearch-loop.ps1 -- check that AUTORESEARCH_SUMMARY was produced, alert if missing (prevents future silent failures)</div>
+    <div class="priority-item"><span class="priority-num">5.</span> WeeklyDigest validation Friday at 7pm -- first run since budget fix</div>
+  </div>
+
+  <!-- Lesson -->
+  <div class="card">
+    <h2>Lesson Learned</h2>
+    <div class="fix-item critical">
+      <div class="fix-title">Silent failures are worse than crashes</div>
+      <div class="fix-detail">
+        A script that exits 0 but produces no output is more dangerous than one that crashes. Crashes are visible in Task Scheduler. Silent failures look healthy. The autoresearch loop appeared "result 0" for 18 hours while doing nothing. Future scripts need output validation: if no SUMMARY line is produced, that's a failure even if the exit code is 0.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  AutoResearch Agent -- Life-OS Self-Improvement Loop<br>
+  Generated by Opus 4.6 | Cycle #7 | Fix #32
+</div>
+
+</body>
+</html>

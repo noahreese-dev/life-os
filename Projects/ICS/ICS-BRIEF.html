@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICS API Call Briefing — UltrawashAPP</title>
+    <style>
+        :root {
+            --bg: #fafafa;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text: #1a202c;
+            --muted: #718096;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --green: #059669;
+            --green-light: #ecfdf5;
+            --orange: #d97706;
+            --orange-light: #fffbeb;
+            --red: #dc2626;
+            --red-light: #fef2f2;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .card-accent { border-left: 4px solid var(--accent); }
+        .card-green { border-left: 4px solid var(--green); background: var(--green-light); }
+        .card-orange { border-left: 4px solid var(--orange); background: var(--orange-light); }
+        .card-red { border-left: 4px solid var(--red); background: var(--red-light); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+        th {
+            background: var(--accent-light);
+            font-weight: 600;
+        }
+        tr:nth-child(even) { background: #f8fafc; }
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        li { margin-bottom: 0.3rem; }
+        .tag {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .tag-blue { background: var(--accent-light); color: var(--accent); }
+        .tag-green { background: var(--green-light); color: var(--green); }
+        .tag-orange { background: var(--orange-light); color: var(--orange); }
+        .tag-red { background: var(--red-light); color: var(--red); }
+        .flow-diagram {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 1.25rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .checklist li {
+            list-style: none;
+            margin-left: -1.5rem;
+        }
+        .checklist li::before {
+            content: '\2610';
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+        }
+        strong { font-weight: 600; }
+        p { margin-bottom: 0.5rem; }
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+        @media print {
+            body { padding: 1rem; }
+            .card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<h1>ICS API Call Briefing</h1>
+<p class="subtitle">Prepared for Noah Reese — UltrawashAPP Integration | March 2026</p>
+
+<!-- ============================================ -->
+<h2>1. How ICS Systems Work</h2>
+
+<div class="card card-accent">
+    <h3>The ICS Ecosystem (End-to-End)</h3>
+    <div class="flow-diagram">
+Customer arrives
+  &darr;
+[Auto Passport RFID/LPR] &mdash; identifies vehicle (99.9% accuracy with AI-LPR)
+  &darr;
+[Auto Sentry Terminal] &mdash; payment kiosk (EMV, NFC, cash, codes)
+  &darr;                    &larr; CAGE API &rarr; [Card Processor / TransFirst]
+[WashConnect Server] &mdash; central POS + management (ASP.NET, Windows)
+  &darr;
+[Tunnel Master WBC] &mdash; controls wash equipment (Ethernet + RS-485)
+  &darr;
+[Gate opens, wash runs, customer exits]
+
+SEPARATELY:
+  [WashConnect Mobile App] &mdash; operator reports (iOS/Android)
+  [WashNOW App] &mdash; customer purchasing (iOS/Android)
+  [Digital Menu Boards] &mdash; 46" sunlight-readable displays
+  [Codax] &mdash; code-based access control for equipment
+    </div>
+</div>
+
+<div class="card">
+    <h3>Key Components</h3>
+    <table>
+        <tr><th>Component</th><th>What It Does</th><th>Relevance to Us</th></tr>
+        <tr><td><strong>WashConnect</strong></td><td>Central POS + management. Customers, memberships, billing, reports, multi-site.</td><td><span class="tag tag-red">Core target</span> — this is what we need API access to</td></tr>
+        <tr><td><strong>Auto Sentry</strong></td><td>Payment kiosks. Flex, CPT, Petro, SmartStart Pro models.</td><td>Customer touchpoint — where codes are entered</td></tr>
+        <tr><td><strong>CAGE API</strong></td><td>Payment processing layer. Keeps cardholder data out of scope.</td><td>Internal only — not available to us</td></tr>
+        <tr><td><strong>WashNOW</strong></td><td>Customer mobile app for purchasing washes, clubs, gift cards.</td><td><span class="tag tag-orange">Direct competitor</span> to UltrawashAPP</td></tr>
+        <tr><td><strong>Auto Passport</strong></td><td>Vehicle ID via RFID windshield tags or AI-powered LPR cameras.</td><td>Could link to our app for contactless ID</td></tr>
+        <tr><td><strong>Codax</strong></td><td>Code entry system. Customer enters numeric code at kiosk.</td><td><span class="tag tag-green">Potential bypass</span> — generate codes without API</td></tr>
+        <tr><td><strong>Tunnel Master WBC</strong></td><td>Tunnel controller. Manages equipment via Ethernet/RS-485.</td><td>Low relevance — equipment-level</td></tr>
+    </table>
+</div>
+
+<div class="card">
+    <h3>WashConnect Data Model</h3>
+    <p>The system manages:</p>
+    <ul>
+        <li><strong>Customers</strong>: Demographics, vehicles (VIN + plate), PIN access, Cards on File</li>
+        <li><strong>Club Memberships</strong>: Multi-tier, auto-billing, proration, cross-site usage, visit tracking</li>
+        <li><strong>Fleet Accounts</strong>: Departments, vehicles, prepaid balances, invoicing</li>
+        <li><strong>Transactions</strong>: Every wash, payment, refund, void — with journal entries</li>
+        <li><strong>Promotions</strong>: Bonus points, cascade pricing, calendar triggers, frequency tracking, punch cards</li>
+        <li><strong>50+ Report Types</strong>: Financial, operational, statistical, performance analytics</li>
+    </ul>
+</div>
+
+<!-- ============================================ -->
+<h2>2. Known Integration Points</h2>
+
+<div class="card card-green">
+    <h3>Who Has Successfully Integrated</h3>
+    <table>
+        <tr><th>Company</th><th>Integration</th><th>Key Detail</th></tr>
+        <tr><td><strong>Rinsed</strong></td><td>CRM &harr; WashConnect</td><td>Free API access (partnership). Serves 3,000+ locations, 10.76M memberships. Eliminates API fees.</td></tr>
+        <tr><td><strong>Flower Press Interactive</strong></td><td>Custom apps &harr; WashConnect</td><td>8+ years experience. Built Brown Bear app (60+ sites, React Native). Required custom middleware due to "limited API capabilities." ICS had to add new endpoints.</td></tr>
+    </table>
+    <p style="margin-top: 0.75rem;"><strong>Key Insight:</strong> The API exists, it works, but it has limitations. Flower Press had to build middleware to bridge gaps, and ICS was willing to add new endpoints when asked.</p>
+</div>
+
+<div class="card">
+    <h3>WashConnect Technical Architecture (What We Know)</h3>
+    <table>
+        <tr><th>Aspect</th><th>Detail</th></tr>
+        <tr><td>Backend</td><td>ASP.NET (.aspx pages confirmed)</td></tr>
+        <tr><td>Frontend</td><td>jQuery web application</td></tr>
+        <tr><td>Hosting</td><td>hosting1.washconnect.com, host1000.washconnect.com</td></tr>
+        <tr><td>URL Pattern</td><td>/MyEco[SiteID]/Login.aspx</td></tr>
+        <tr><td>Platform</td><td>Windows Server (IIS implied)</td></tr>
+        <tr><td>Database</td><td>SQL Server (implied, not confirmed)</td></tr>
+        <tr><td>Desktop App</td><td>WashConnect Container App v1.8.2.5</td></tr>
+        <tr><td>Auth Model</td><td>Entity/Site/Privilege-based access</td></tr>
+        <tr><td>Remote Support</td><td>BeyondTrust</td></tr>
+        <tr><td>Multi-site</td><td>VPN connectivity for data replication</td></tr>
+    </table>
+</div>
+
+<!-- ============================================ -->
+<h2>3. What the $10K API Likely Includes</h2>
+
+<div class="card card-orange">
+    <h3>Estimated API Scope (Based on WashConnect Data Model + Third-Party Evidence)</h3>
+    <ul>
+        <li><strong>Customer CRUD</strong>: Create, read, update customers with vehicle/plate data</li>
+        <li><strong>Membership Management</strong>: Enroll, renew, suspend, terminate, auto-bill</li>
+        <li><strong>Transaction Data</strong>: Wash history, payment records, revenue data</li>
+        <li><strong>Wash Code Generation</strong>: Possibly — Codax codes via API</li>
+        <li><strong>Fleet Operations</strong>: Account management, invoicing</li>
+        <li><strong>Report Access</strong>: Financial and operational reports</li>
+        <li><strong>Promotion Engine</strong>: Apply discounts, track punch cards</li>
+    </ul>
+    <p style="margin-top: 0.75rem;"><strong>What it probably does NOT include:</strong></p>
+    <ul>
+        <li>CAGE API / direct payment processing access</li>
+        <li>Tunnel Master equipment control</li>
+        <li>Gate/relay direct control</li>
+        <li>Real-time webhooks (likely polling-only)</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Fee Structure (Unknown — Ask These)</h3>
+    <table>
+        <tr><th>Question</th><th>Why It Matters</th></tr>
+        <tr><td>One-time vs annual vs per-site?</td><td>$10K one-time is different from $10K/year or $10K/site</td></tr>
+        <tr><td>Does it include sandbox?</td><td>You need test environment for development</td></tr>
+        <tr><td>NDA required?</td><td>Could limit what you can build</td></tr>
+        <tr><td>Can you see docs before paying?</td><td>Don't pay $10K for something that can't do what you need</td></tr>
+    </table>
+</div>
+
+<!-- ============================================ -->
+<h2>4. Alternative Approaches (Without Paying $10K)</h2>
+
+<div class="card card-green">
+    <h3>Best Options Ranked</h3>
+    <table>
+        <tr><th>#</th><th>Approach</th><th>Cost</th><th>Complexity</th><th>UX Quality</th></tr>
+        <tr><td>1</td><td><strong>Negotiate partnership</strong> (like Rinsed)</td><td>$0</td><td>Low</td><td>Best</td></tr>
+        <tr><td>2</td><td><strong>Rinsed as middleware</strong> — integrate with their API</td><td>Rinsed sub</td><td>Medium</td><td>Good</td></tr>
+        <tr><td>3</td><td><strong>BLE beacons + Codax codes</strong></td><td>~$200/site</td><td>Medium</td><td>Good</td></tr>
+        <tr><td>4</td><td><strong>QR code on receipts</strong></td><td>$0</td><td>Low</td><td>OK</td></tr>
+        <tr><td>5</td><td><strong>WashConnect report export</strong> scraping</td><td>$0</td><td>Medium</td><td>Limited</td></tr>
+        <tr><td>6</td><td><strong>Full overlay</strong> (own payments, own memberships)</td><td>Dev time</td><td>High</td><td>Good</td></tr>
+        <tr><td>7</td><td><strong>Pay the $10K</strong> and build middleware</td><td>$10K</td><td>High</td><td>Best</td></tr>
+    </table>
+</div>
+
+<div class="card">
+    <h3>Industry Precedents for Bypassing POS APIs</h3>
+    <ul>
+        <li><strong>Circle K + Gimbal</strong>: BLE beacons at payment terminals, authentication in milliseconds, production at scale</li>
+        <li><strong>XpresWash</strong>: Bluetooth-based loyalty that works with "most existing entry systems" — no POS API needed</li>
+        <li><strong>DRB Beacon Mobile</strong>: Geofence + BLE for membership redemption, no RFID tag needed</li>
+        <li><strong>LoyaltyNation</strong>: QR scanning at kiosks, Apple Wallet/Google Pay, takes 10 seconds, no integration needed</li>
+        <li><strong>Stamp Me</strong>: Car wash loyalty completely independent of POS system</li>
+    </ul>
+</div>
+
+<!-- ============================================ -->
+<h2>5. Top Questions for the Call</h2>
+
+<div class="card card-accent">
+    <h3>Must-Ask (Priority Order)</h3>
+    <ol>
+        <li>"What's the fee structure — one-time, annual, or per-site?"</li>
+        <li>"You waived API fees for Rinsed. Is there a partner program for app developers?"</li>
+        <li>"Can we review API documentation before committing to the fee?"</li>
+        <li>"Is the API REST or SOAP? JSON or XML?"</li>
+        <li>"Does the API support wash code generation? Can a customer purchase in-app and get a code for the Auto Sentry?"</li>
+        <li>"Does WashNOW use the same third-party API, or a separate internal API?"</li>
+        <li>"Does the API support webhooks for real-time events?"</li>
+        <li>"Can we handle payment processing in our app (Stripe) and record the transaction in WashConnect?"</li>
+        <li>"Is there a sandbox environment for development?"</li>
+        <li>"Who's our technical contact for integration support?"</li>
+    </ol>
+</div>
+
+<div class="card">
+    <h3>Information Checklist (Get Before Hanging Up)</h3>
+    <ul class="checklist">
+        <li>Exact fee structure and payment terms</li>
+        <li>API documentation (or commitment to send it)</li>
+        <li>REST vs SOAP, JSON vs XML</li>
+        <li>Authentication method (OAuth, API key, JWT)</li>
+        <li>Sandbox/test environment availability</li>
+        <li>Webhook support (yes/no)</li>
+        <li>Named technical contact</li>
+        <li>Partnership program eligibility</li>
+        <li>Timeline from signup to first API call</li>
+        <li>NDA or contractual requirements</li>
+        <li>Whether wash code generation is available via API</li>
+        <li>Whether LPR/Auto Passport can be linked to third-party accounts</li>
+    </ul>
+</div>
+
+<!-- ============================================ -->
+<h2>6. Power Moves</h2>
+
+<div class="card card-red">
+    <h3>Negotiation Leverage</h3>
+    <ul>
+        <li><strong>Rinsed precedent</strong>: "You already waive fees for partners. We're bringing the same value — more memberships, less churn, more terminal transactions."</li>
+        <li><strong>Competitive pressure</strong>: DRB has Beacon Mobile built-in. FlexWash offers free API. Washify has native mobile. ICS operators are falling behind on mobile.</li>
+        <li><strong>Bypass threat</strong> (use sparingly): "We can build this with BLE beacons and Codax codes without any API access. We'd prefer native integration, but the economics have to make sense."</li>
+        <li><strong>Scale argument</strong>: "Every membership we sign up means more recurring revenue through your payment processing. This is a revenue driver for you, not just for us."</li>
+        <li><strong>Flower Press precedent</strong>: "Flower Press has been integrating with your API for 8 years across 60+ locations. We want to bring that same capability to more operators."</li>
+    </ul>
+</div>
+
+<div class="divider"></div>
+
+<h2>7. Quick Reference Card</h2>
+
+<div class="card">
+    <table>
+        <tr><th>Item</th><th>Detail</th></tr>
+        <tr><td>Company</td><td>Innovative Control Systems (ICS), owned by OPW Vehicle Wash Solutions (Dover Corp)</td></tr>
+        <tr><td>Support</td><td>1-800-246-3469</td></tr>
+        <tr><td>POS System</td><td>WashConnect (ASP.NET, multi-site, cloud-hosted)</td></tr>
+        <tr><td>Payment Kiosks</td><td>Auto Sentry Flex, CPT, Petro, SmartStart Pro</td></tr>
+        <tr><td>Payment API</td><td>CAGE (internal only, handles EMV/PCI)</td></tr>
+        <tr><td>Vehicle ID</td><td>Auto Passport RFID + AI-LPR (99.9% accuracy)</td></tr>
+        <tr><td>Access Control</td><td>Codax (code entry system, acquired company)</td></tr>
+        <tr><td>Customer App</td><td>WashNOW (iOS/Android)</td></tr>
+        <tr><td>Operator App</td><td>WashConnect Mobile (iOS 61.6MB / Android)</td></tr>
+        <tr><td>Controller</td><td>Tunnel Master WBC (web-based, IP 10.0.0.200, Ethernet + RS-485)</td></tr>
+        <tr><td>CRM Partner</td><td>Rinsed (free API access, 3,000+ locations)</td></tr>
+        <tr><td>App Dev Partner</td><td>Flower Press Interactive (8 years, built Brown Bear app)</td></tr>
+        <tr><td>API Fee</td><td>~$10K (structure TBD)</td></tr>
+    </table>
+</div>
+
+<div class="card" style="background: #f1f5f9; text-align: center; margin-top: 2rem;">
+    <p><strong>Bottom Line:</strong> ICS has what we need in WashConnect. The question is the price. Push hard for partnership/fee waiver. If they won't budge, BLE beacons + Codax codes give us a viable alternative at near-zero cost.</p>
+</div>
+
+<p style="text-align: center; color: var(--muted); margin-top: 2rem; font-size: 0.85rem;">
+    Research compiled March 2026 | Sources: icscarwashsystems.com, WashConnect WebHelp v1.7.4, carwashforum.com, Rinsed partnership announcements, Flower Press Interactive case studies, ICS press releases
+</p>
+
+</body>
+</html>

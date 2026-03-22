@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ChatGrid.ai Research Brief — March 20, 2026</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a28;
+    --border: #2a2a3a;
+    --text: #e0e0e8;
+    --text-dim: #8888a0;
+    --accent: #7c6ff7;
+    --accent-glow: #9b8fff;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --orange: #fb923c;
+    --cyan: #22d3ee;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    color: var(--accent-glow);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+  }
+
+  .verdict-box {
+    background: linear-gradient(135deg, #1a1520, #14142a);
+    border: 2px solid var(--yellow);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .verdict-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .verdict-text {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--yellow);
+  }
+
+  .verdict-reason {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    color: var(--accent-glow);
+    margin: 24px 0 12px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 1rem;
+    color: var(--cyan);
+    margin: 16px 0 8px 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-high { background: rgba(74,222,128,0.15); color: var(--green); }
+  .tag-medium { background: rgba(251,191,36,0.15); color: var(--yellow); }
+  .tag-low { background: rgba(136,136,160,0.15); color: var(--text-dim); }
+
+  .card p, .card li {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .card ul {
+    padding-left: 16px;
+    margin-top: 4px;
+  }
+
+  .card li { margin-bottom: 4px; }
+
+  .impact {
+    font-size: 0.8rem;
+    color: var(--accent-glow);
+    font-style: italic;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    margin: 12px 0;
+  }
+
+  .comparison-table th {
+    background: var(--surface2);
+    color: var(--accent-glow);
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .comparison-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .comparison-table tr:nth-child(even) td {
+    background: var(--surface);
+  }
+
+  .win { color: var(--green); font-weight: 600; }
+  .lose { color: var(--red); font-weight: 600; }
+  .neutral { color: var(--text-dim); }
+
+  .pricing-box {
+    background: var(--surface);
+    border: 1px solid var(--orange);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 12px 0;
+  }
+
+  .pricing-box .label {
+    color: var(--orange);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .pricing-box p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+
+  .use-case {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+
+  .use-case .label {
+    font-size: 0.7rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  .use-case .title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .use-case p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+
+  .steal-box {
+    background: linear-gradient(135deg, #0f1a14, #0a1420);
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 16px 0;
+  }
+
+  .steal-box .label {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .steal-box p {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+  }
+
+  .links li {
+    margin-bottom: 6px;
+  }
+
+  .links a {
+    color: var(--accent-glow);
+    text-decoration: none;
+    font-size: 0.85rem;
+  }
+
+  .links a:hover {
+    text-decoration: underline;
+  }
+
+  .confuse-warning {
+    background: var(--surface2);
+    border: 1px solid var(--red);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .confuse-warning strong {
+    color: var(--red);
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<h1>ChatGrid.ai Research Brief</h1>
+<p class="subtitle">Deep Research / March 20, 2026 / CoS Research Agent</p>
+
+<!-- VERDICT -->
+<div class="verdict-box">
+  <div class="verdict-label">Recommendation</div>
+  <div class="verdict-text">WATCH IT - Don't Adopt Yet</div>
+  <div class="verdict-reason">Interesting MCP knowledge layer, but too new, opaque pricing, and cloud-only. Steal the idea, build it local.</div>
+</div>
+
+<!-- WHAT IT IS -->
+<h2>What ChatGrid IS</h2>
+<div class="summary-box">
+  A <strong>team project knowledge management platform</strong> that lets you drop videos, docs, PDFs, web links, and text onto a visual spatial canvas ("board"), automatically vectorizes all content, and lets you or your AI coding tools query that knowledge using natural language. Integrates directly into <strong>Claude Code, Cursor, and Windsurf via MCP</strong>. Think: shared, AI-searchable knowledge layer for dev teams &mdash; between Notion, NotebookLM, and an MCP-connected RAG pipeline.
+</div>
+
+<div class="confuse-warning">
+  <strong>Name collision warning:</strong> Three different "ChatGrid" products exist: (1) chatgrid.ai &mdash; the knowledge board (this research), (2) ChatGrid by PNNL &mdash; a power grid visualization tool (irrelevant), (3) META by ChatGrid &mdash; a defunct messaging platform acquired by Medallia (irrelevant).
+</div>
+
+<!-- CAPABILITIES -->
+<h2>Key Capabilities (Ranked by Impact)</h2>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">1. MCP Integration with Claude Code</span>
+    <span class="tag tag-high">High</span>
+  </div>
+  <ul>
+    <li>Installs in ~2 min via <code>.mcp.json</code> config</li>
+    <li>Claude Code auto-searches project boards during conversation</li>
+    <li>Tools: list/create boards, add content, semantic search, grounded Q&A</li>
+  </ul>
+  <div class="impact">Could give every Claude session persistent project context that survives context resets.</div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">2. Semantic Search + RAG Over Your Content</span>
+    <span class="tag tag-high">High</span>
+  </div>
+  <ul>
+    <li>All content chunked, embedded, stored as vectors</li>
+    <li>Natural language search with similarity scoring (0-1 threshold)</li>
+    <li>AI responses grounded in YOUR docs, not generic knowledge</li>
+    <li>Up to 100K characters per vectorize request</li>
+  </ul>
+  <div class="impact">External memory layer for agents &mdash; project docs, architecture decisions, client conversations.</div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">3. Multi-Format Content Ingestion</span>
+    <span class="tag tag-medium">Medium</span>
+  </div>
+  <ul>
+    <li>YouTube videos (auto-transcript extraction)</li>
+    <li>PDFs, DOCX, XLSX, PPTX, CSV</li>
+    <li>Images (PNG, JPEG, GIF, WebP, SVG), Audio (MP3, WAV), Video (MP4)</li>
+    <li>Web URLs (auto-scrape + vectorize)</li>
+    <li>Max file size: 50 MB</li>
+  </ul>
+  <div class="impact">One place for all project research materials, instantly searchable.</div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">4. Visual Spatial Canvas</span>
+    <span class="tag tag-medium">Medium</span>
+  </div>
+  <ul>
+    <li>Node-and-edge graph on infinite canvas</li>
+    <li>Nodes with x/y coordinates, metadata, connections</li>
+    <li>Boards can be public or private</li>
+  </ul>
+  <div class="impact">Visual project maps. But we already have Obsidian for this.</div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">5. Team Knowledge Sharing</span>
+    <span class="tag tag-medium">Medium</span>
+  </div>
+  <ul>
+    <li>Shared API keys across team members</li>
+    <li>Board-level access control</li>
+    <li>New hires can query the knowledge base on day one</li>
+  </ul>
+  <div class="impact">Useful for scaling. Less relevant for solo operations.</div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">6. Full REST API</span>
+    <span class="tag tag-medium">Medium</span>
+  </div>
+  <ul>
+    <li>Complete CRUD: boards, nodes, edges, chats, messages, documents, assets, jobs</li>
+    <li>SSE streaming for AI chat responses</li>
+    <li>AI model: Claude Sonnet 4</li>
+    <li>Rate limiting with standard headers</li>
+  </ul>
+  <div class="impact">Fully programmable. Could integrate into autonomous tasks.</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- USE CASES -->
+<h2>How We Could Use It</h2>
+
+<h3>For Life-OS</h3>
+
+<div class="use-case">
+  <div class="label">Life-OS</div>
+  <div class="title">Persistent Project Memory via MCP</div>
+  <p>Drop all project docs into per-project boards. Every Claude Code session auto-searches this knowledge, even after context compaction. Partially solves the session amnesia problem.</p>
+</div>
+
+<div class="use-case">
+  <div class="label">Life-OS</div>
+  <div class="title">Research Archive</div>
+  <p>Overnight autoresearch agent writes findings to ChatGrid boards. Future sessions query "what did we learn about X?" and get grounded answers with sources.</p>
+</div>
+
+<div class="use-case">
+  <div class="label">Life-OS</div>
+  <div class="title">Client Knowledge Base</div>
+  <p>Per-client boards (Boz, Mo, Ultrawash) with all comms, scope docs, invoices, meeting notes. Any agent working on that project gets instant context.</p>
+</div>
+
+<h3>For Intelligence Masters</h3>
+
+<div class="use-case">
+  <div class="label">IM Business</div>
+  <div class="title">AI Knowledge Boards as a Service</div>
+  <p>Offer pre-loaded knowledge boards for small business clients &mdash; SOPs, training materials, industry knowledge. Setup fee + monthly management.</p>
+</div>
+
+<div class="use-case">
+  <div class="label">IM Business</div>
+  <div class="title">Hamilton Campaign Context</div>
+  <p>Per-client boards with business info, competitors, local market data. AI agents building sites get instant client context.</p>
+</div>
+
+<div class="use-case">
+  <div class="label">IM Business</div>
+  <div class="title">Contractor Onboarding</div>
+  <p>Training videos and process docs on a board. New contractors query "how do we deploy a site?" and get specific answers from documented process.</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- COMPARISON TABLE -->
+<h2>Pros &amp; Cons vs Our Current Stack</h2>
+
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>ChatGrid</th>
+      <th>Our Stack</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Persistent knowledge</td>
+      <td class="win">Board survives forever, MCP queryable</td>
+      <td class="lose">PostCompact hook, limited</td>
+    </tr>
+    <tr>
+      <td>Multi-format ingestion</td>
+      <td class="win">YouTube, PDF, DOCX, audio, video, URLs</td>
+      <td class="lose">Manual copy to markdown</td>
+    </tr>
+    <tr>
+      <td>Semantic search</td>
+      <td class="win">Vector embeddings + similarity</td>
+      <td class="lose">Grep/ripgrep (keyword only)</td>
+    </tr>
+    <tr>
+      <td>IDE-native access</td>
+      <td class="win">MCP integration, zero switching</td>
+      <td class="neutral">Read files manually</td>
+    </tr>
+    <tr>
+      <td>Offline operation</td>
+      <td class="lose">Cloud-only, requires internet</td>
+      <td class="win">Everything local</td>
+    </tr>
+    <tr>
+      <td>Cost</td>
+      <td class="lose">Credit-based (pricing unclear)</td>
+      <td class="win">$0 (files on disk)</td>
+    </tr>
+    <tr>
+      <td>Data privacy</td>
+      <td class="lose">Cloud servers, no compliance docs</td>
+      <td class="win">All data stays local</td>
+    </tr>
+    <tr>
+      <td>Orchestration depth</td>
+      <td class="lose">Knowledge boards + search only</td>
+      <td class="win">34 skills, 10 agents, 12 tasks, Telegram</td>
+    </tr>
+    <tr>
+      <td>Customization</td>
+      <td class="lose">Limited to their API surface</td>
+      <td class="win">Full control over everything</td>
+    </tr>
+    <tr>
+      <td>Personal/psych data</td>
+      <td class="lose">Would NOT put OCTOPUS.md on their servers</td>
+      <td class="win">Safely in local files</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<!-- PRICING -->
+<h2>Pricing</h2>
+
+<div class="pricing-box">
+  <div class="label">Status: Opaque</div>
+  <p>Credit-based system. Docs show example of 5,000 credits/month allowance.</p>
+  <p>No public pricing page. No tier descriptions. No cost-per-action documented.</p>
+  <p>Credits can be purchased beyond monthly allowance. Likely freemium model.</p>
+  <p>FirstPromoter affiliate tracking active = referral/growth program exists.</p>
+  <p><strong>Would need to sign up to see actual pricing.</strong></p>
+</div>
+
+<hr class="section-divider">
+
+<!-- TECHNICAL -->
+<h2>Technical Details</h2>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">Architecture</span>
+  </div>
+  <ul>
+    <li><strong>Frontend:</strong> React SPA</li>
+    <li><strong>Backend:</strong> Supabase</li>
+    <li><strong>Docs:</strong> Mintlify</li>
+    <li><strong>AI Model:</strong> Claude Sonnet 4</li>
+    <li><strong>MCP:</strong> <code>chatgrid-mcp</code> npm package</li>
+    <li><strong>API:</strong> REST + SSE streaming</li>
+    <li><strong>Self-hosting:</strong> Not available</li>
+    <li><strong>Open source:</strong> No</li>
+  </ul>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">What's Missing</span>
+  </div>
+  <ul>
+    <li>No Gmail, Calendar, Slack integrations</li>
+    <li>No voice interface</li>
+    <li>No mobile app</li>
+    <li>No self-hosting option</li>
+    <li>No SOC2/GDPR compliance documentation</li>
+    <li>No data residency controls</li>
+    <li>No multi-agent orchestration</li>
+    <li>No always-on/persistent agent features</li>
+    <li>Zero public reviews or track record</li>
+  </ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- STEAL THEIR IDEA -->
+<div class="steal-box">
+  <div class="label">What to Steal From Their Approach</div>
+  <p>The <strong>per-project MCP knowledge board</strong> idea is excellent. Build a lightweight version using our existing Obsidian vault + a local vector store (<strong>ChromaDB, LanceDB, or Qdrant</strong>) exposed via a custom MCP server. Same "Claude Code auto-searches project knowledge" capability. Zero privacy risk. Zero cost. Full control.</p>
+</div>
+
+<hr class="section-divider">
+
+<!-- LINKS -->
+<h2>Links &amp; Sources</h2>
+<ul class="links">
+  <li><a href="https://chatgrid.ai" target="_blank">ChatGrid.ai &mdash; Main Site</a></li>
+  <li><a href="https://docs.chatgrid.ai" target="_blank">ChatGrid Documentation</a></li>
+  <li><a href="https://docs.chatgrid.ai/api-reference/boards/list-boards" target="_blank">API Reference</a></li>
+  <li><a href="https://docs.chatgrid.ai/mcp-setup" target="_blank">MCP Setup Guide</a></li>
+  <li><a href="https://docs.chatgrid.ai/use-cases" target="_blank">Use Cases</a></li>
+  <li><a href="https://docs.chatgrid.ai/cookbooks/quickstart" target="_blank">Quickstart Tutorial</a></li>
+  <li><a href="https://www.thesecondbrain.io/" target="_blank">Second Brain (Closest Competitor)</a></li>
+  <li><a href="https://www.thesecondbrain.io/compare" target="_blank">Second Brain Comparison Page</a></li>
+  <li><a href="https://www.producthunt.com/products/meta-by-chatgrid" target="_blank">META by ChatGrid on Product Hunt (Old/Different Product)</a></li>
+</ul>
+
+<div class="footer">
+  Life-OS CoS Research Agent / Deep Research Brief / March 20, 2026
+</div>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+# Life-OS Overnight Research — Deep Research + HTML Briefing
+# Runs daily at 1:00am via Windows Task Scheduler
+# Searches for Claude Code ecosystem news, competitor moves, Life-OS improvements
+#
+# IMPORTANT: Uses Start-Job (not inline claude -p) to invoke claude.
+# Start-Job runs a background PowerShell worker that resolves claude.ps1 correctly.
+# Pattern proven in autoresearch-loop.ps1 (Fix #32, Mar 19 2026).
+#
+# ENCODING: Every Out-File call uses -Encoding utf8 to prevent UTF-16LE double-spacing.
+#
+# Usage:
+#   .\overnight-research.ps1              # Normal run
+#   .\overnight-research.ps1 -DryRun      # Show what would happen
+#   .\overnight-research.ps1 -MaxBudget 3 # Override budget
+
+param(
+    [decimal]$MaxBudget = 5.00,
+    [int]$TimeoutMinutes = 30,
+    [switch]$DryRun
+)
+
+# Load config
+. "$PSScriptRoot\..\config.ps1"
+
+$date = Get-Date -Format "yyyy-MM-dd"
+$timestamp = Get-Date -Format "yyyy-MM-dd_HHmm"
+$logDir = "$lifeOS\.claude\autonomous\logs"
+$logFile = "$logDir\overnight-research-$timestamp.log"
+$briefingMd = "$lifeOS\briefings\singularity\overnight-research-$date.md"
+$briefingHtml = "$lifeOS\briefings\singularity\overnight-research-$date.html"
+
+# Ensure directories exist
+New-Item -ItemType Directory -Force -Path $logDir -ErrorAction SilentlyContinue | Out-Null
+New-Item -ItemType Directory -Force -Path (Split-Path $briefingMd) -ErrorAction SilentlyContinue | Out-Null
+
+Set-Location $lifeOS
+
+# --- ZOMBIE CLEANUP ---
+# Kill stale overnight-research claude -p processes from previous runs
+$zombiesKilled = 0
+$staleProcs = Get-CimInstance Win32_Process -Filter "Name='node.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -match 'overnight.*research' -or $_.CommandLine -match 'OvernightResearch' }
+
+foreach ($proc in $staleProcs) {
+    $age = (Get-Date) - $proc.CreationDate
+    if ($age.TotalMinutes -gt 60) {
+        try {
+            Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue
+            $zombiesKilled++
+        } catch { }
+    }
+}
+
+if ($zombiesKilled -gt 0) {
+    Write-Host "Zombie cleanup: killed $zombiesKilled stale processes"
+}
+
+# --- DRY RUN ---
+if ($DryRun) {
+    Write-Host "=== OVERNIGHT RESEARCH - DRY RUN ==="
+    Write-Host "Life-OS root:     $lifeOS"
+    Write-Host "Max budget:       `$$MaxBudget"
+    Write-Host "Timeout:          ${TimeoutMinutes}min"
+    Write-Host "Log file:         $logFile"
+    Write-Host "Briefing (md):    $briefingMd"
+    Write-Host "Briefing (html):  $briefingHtml"
+    Write-Host ""
+    Write-Host "Would run:"
+    Write-Host "  1. Deep research: Twitter/X, Claude Code changelog, competitor landscape"
+    Write-Host "  2. Read METRICS.md for improvement opportunities"
+    Write-Host "  3. Generate markdown briefing"
+    Write-Host "  4. Generate HTML briefing (alchemy dark theme, phone-scannable)"
+    Write-Host "  5. Send Telegram summary (quiet hours: skipped if before 8am)"
+    exit 0
+}
+
+# --- Centralized stagger delay (config.ps1 Get-StaggerDelay) ---
+# Normal: 3-10s. Overnight runs rarely batch, but safe default.
+$delay = Get-StaggerDelay -ScriptName "overnight-research"
+"[$(Get-Date -Format 'HH:mm:ss')] Overnight research starting (delay: ${delay}s)" | Out-File $logFile -Encoding utf8
+Start-Sleep -Seconds $delay
+
+# --- Build the research prompt ---
+$prompt = @"
+You are the OvernightResearch agent for Life-OS. This is an AUTONOMOUS scheduled run at 1am -- no human is watching. The CEO will read your output in the morning on his phone.
+
+## Your Mission
+Deep research on what builders are shipping in the AI agent / personal OS / Claude Code ecosystem. Generate TWO output files.
+
+## Research Tasks (do ALL of these)
+
+### 1. Twitter/X Landscape Scan
+Search Twitter/X for recent posts about:
+- "claude code" — new tricks, workflows, plugins, hooks
+- "life os" OR "personal os" OR "second brain" — what builders are creating
+- "ai agent" AND "always on" — persistent agent architectures
+- "mcp server" — new MCP tools and integrations
+- Any viral AI agent demos or frameworks gaining traction
+
+For each finding: who posted it, what they built/shared, why it matters for Life-OS, link if available.
+
+### 2. Claude Code Changelog
+Check if there are any new Claude Code features, updates, or changelog entries. Look for:
+- New CLI flags or options
+- New hook events
+- MCP improvements
+- Permission model changes
+- Any beta features announced
+
+### 3. Competitor Intelligence
+Check for updates from:
+- Cursor / Windsurf / other AI coding tools
+- Notion AI, Obsidian plugins, personal OS frameworks
+- Open-source agent frameworks (CrewAI, AutoGen, LangGraph, claude-flow)
+- Any new "Life OS" or "personal AI assistant" projects on GitHub/ProductHunt
+
+### 4. Life-OS Improvement Opportunities
+Read METRICS.md and identify:
+- Current system score and what's dragging it down
+- Which autonomous tasks are failing or underperforming
+- Specific, actionable improvements that could be made tonight or this week
+- Any new tools/frameworks discovered above that Life-OS should integrate
+
+### 5. Rank Everything by Impact
+Score each finding 1-5 on:
+- **Relevance**: How directly does this apply to Life-OS?
+- **Urgency**: Time-sensitive or can wait?
+- **Effort**: Quick win or major project?
+
+Sort output by impact (relevance x urgency / effort).
+
+## Output File 1: Markdown Briefing
+Write to: briefings/singularity/overnight-research-$date.md
+
+Format:
+# Overnight Research Briefing -- $date
+
+## Top 3 Findings (TL;DR for morning)
+1. [Most impactful finding]
+2. [Second most impactful]
+3. [Third]
+
+## Twitter/X Landscape
+[Findings organized by topic]
+
+## Claude Code Updates
+[Any changelog items or new features]
+
+## Competitor Moves
+[What others are building]
+
+## Life-OS Improvements
+[Specific recommendations with effort estimates]
+
+## Raw Signal Log
+[Everything else worth noting, lower priority]
+
+## Output File 2: HTML Briefing (Phone-Optimized)
+Write to: briefings/singularity/overnight-research-$date.html
+
+Design requirements:
+- Alchemy dark theme: deep navy/charcoal background (#0f1419), gold accents (#d4a853), white text
+- Mobile-first: readable on phone in bed, large tap targets
+- Cards layout: each finding in its own card with impact score badge
+- Top findings highlighted with gold border
+- Collapsible sections (use <details> tags) for dense content
+- Score badges: green (high impact), amber (medium), gray (low)
+- Clean typography: system font stack, generous line-height (1.6+)
+- No external dependencies (inline CSS only)
+- Total page weight under 50KB
+- Header with date, research summary stats, overall signal strength
+
+## Rules
+- Working directory: $lifeOS
+- WRITE BOTH FILES. The HTML file is critical — it's what the CEO reads on his phone.
+- Be thorough but concise. Dense signal, no filler.
+- If a search returns nothing interesting, say so. Don't fabricate findings.
+- If web search tools are unavailable, note which searches you couldn't perform and focus on what you CAN do (reading METRICS.md, checking local system state, analyzing existing briefings for patterns).
+"@
+
+# --- Run claude -p via Start-Job with timeout ---
+"[$(Get-Date -Format 'HH:mm:ss')] Launching claude -p via Start-Job (timeout: ${TimeoutMinutes}min, budget: `$$MaxBudget)" | Out-File $logFile -Append -Encoding utf8
+
+$timeoutSec = $TimeoutMinutes * 60
+$job = Start-Job -ScriptBlock {
+    param($p, $wd, $budget)
+    Set-Location $wd
+    $result = claude -p $p --permission-mode bypassPermissions --max-budget-usd $budget 2>&1
+    $result -join "`n"
+} -ArgumentList $prompt, $lifeOS, $MaxBudget
+
+$completed = $job | Wait-Job -Timeout $timeoutSec
+
+$output = ""
+if ($completed) {
+    $output = Receive-Job $job -ErrorAction SilentlyContinue
+    Remove-Job $job -Force -ErrorAction SilentlyContinue
+    "[$(Get-Date -Format 'HH:mm:ss')] Claude completed successfully" | Out-File $logFile -Append -Encoding utf8
+} else {
+    # Timeout -- kill job
+    $job | Stop-Job -PassThru | Remove-Job -Force -ErrorAction SilentlyContinue
+    "[$(Get-Date -Format 'HH:mm:ss')] TIMEOUT: Claude killed after ${TimeoutMinutes}min" | Out-File $logFile -Append -Encoding utf8
+}
+
+# --- Log output ---
+if ($output) {
+    $output | Out-File $logFile -Append -Encoding utf8
+} else {
+    "[WARNING] No output from claude -p" | Out-File $logFile -Append -Encoding utf8
+}
+
+# --- Verify output files were created ---
+$mdCreated = Test-Path $briefingMd
+$htmlCreated = Test-Path $briefingHtml
+"[$(Get-Date -Format 'HH:mm:ss')] Output files: MD=$mdCreated, HTML=$htmlCreated" | Out-File $logFile -Append -Encoding utf8
+
+# --- Telegram notification (respect quiet hours) ---
+$sendScript = "$lifeOS\.claude\telegram\send.js"
+if (Test-Path $sendScript) {
+    $hour = (Get-Date).Hour
+    # Only send Telegram between 8am and 11pm
+    if ($hour -ge 8 -and $hour -lt 23) {
+        $telegramMsg = "Overnight Research complete ($date). "
+        if ($mdCreated) { $telegramMsg += "MD ready. " }
+        if ($htmlCreated) { $telegramMsg += "HTML ready (open on phone). " }
+        if (-not $mdCreated -and -not $htmlCreated) { $telegramMsg += "WARNING: No output files created. Check logs." }
+        try {
+            node $sendScript $telegramMsg 2>&1 | Out-Null
+            "[$(Get-Date -Format 'HH:mm:ss')] Telegram sent" | Out-File $logFile -Append -Encoding utf8
+        } catch {
+            "[$(Get-Date -Format 'HH:mm:ss')] WARNING: Telegram send failed: $_" | Out-File $logFile -Append -Encoding utf8
+        }
+    } else {
+        "[$(Get-Date -Format 'HH:mm:ss')] Skipping Telegram (quiet hours: ${hour}h)" | Out-File $logFile -Append -Encoding utf8
+    }
+}
+
+# --- Cleanup old logs (keep 7 days) ---
+$cutoff = (Get-Date).AddDays(-7)
+Get-ChildItem "$logDir\overnight-research-*.log" -ErrorAction SilentlyContinue |
+    Where-Object { $_.LastWriteTime -lt $cutoff } |
+    Remove-Item -Force -ErrorAction SilentlyContinue
+
+"[$(Get-Date -Format 'HH:mm:ss')] Overnight research complete" | Out-File $logFile -Append -Encoding utf8
+exit 0

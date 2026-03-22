@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intelligence Masters — Working Relationship with Manas Verma</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap');
+
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --text: #1c1917;
+    --text-secondary: #57534e;
+    --accent: #0f172a;
+    --accent-light: #e2e8f0;
+    --border: #e7e5e4;
+    --gold: #b45309;
+    --gold-bg: #fffbeb;
+    --gold-border: #fde68a;
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    background: var(--accent);
+    color: white;
+    padding: 80px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 30% 0%, rgba(180,83,9,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 100%, rgba(59,130,246,0.08) 0%, transparent 50%);
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+
+  .hero-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .hero .subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 480px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+  }
+
+  .hero .date-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .intro {
+    padding: 48px 0 0;
+  }
+
+  .intro p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    border-left: 3px solid var(--gold);
+    padding-left: 20px;
+    margin-bottom: 48px;
+  }
+
+  section {
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  section:first-of-type { border-top: none; }
+
+  h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0 12px;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 16px; color: var(--text-secondary); }
+
+  .highlight-block {
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+
+  .highlight-block p {
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  .card h3 { margin-top: 0; }
+
+  .direction-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+
+  .direction-list li {
+    padding: 12px 0 12px 32px;
+    position: relative;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .direction-list li:last-child { border-bottom: none; }
+
+  .direction-list li::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .expect-grid {
+    display: grid;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .expect-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .expect-item .number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .expect-item h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .expect-item p { margin-bottom: 0; font-size: 14px; }
+
+  .return-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .return-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 15px;
+  }
+
+  .return-list li:last-child { border-bottom: none; }
+
+  .return-list .check {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ecfdf5;
+    color: #059669;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin-top: 2px;
+  }
+
+  .loose-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  @media (max-width: 600px) {
+    .loose-grid { grid-template-columns: 1fr; }
+  }
+
+  .loose-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .loose-item strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .loose-item p {
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .steps {
+    margin: 24px 0;
+    position: relative;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 28px;
+    position: relative;
+  }
+
+  .step:last-child { padding-bottom: 0; }
+
+  .step::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .step:last-child::before { display: none; }
+
+  .step-dot {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step-content p {
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-secondary);
+  }
+
+  .footer-section {
+    padding: 48px 0 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .footer-section p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    max-width: 500px;
+    margin: 0 auto 24px;
+    line-height: 1.7;
+  }
+
+  .sign-off {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .sign-off-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .brand-footer {
+    text-align: center;
+    padding: 40px 24px;
+    background: var(--accent);
+    color: rgba(255,255,255,0.4);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  @media print {
+    .hero { padding: 40px 24px 30px; }
+    body { font-size: 14px; }
+    section { padding: 24px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Intelligence Masters</div>
+    <h1>Working Relationship with Manas Verma</h1>
+    <p class="subtitle">This document captures what we discussed: the direction we're heading, how we'll work together, and expectations.</p>
+    <span class="date-badge">March 17, 2026</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="intro" style="display:none"></div>
+
+  <!-- THE DIRECTION -->
+  <section>
+    <h2>The Direction</h2>
+    <p>The AI industry is shifting toward unified Life Operating Systems — personal AI that runs your entire life, not just one task. Most software companies don't see this yet. We do. That's our edge.</p>
+
+    <p>Everything we do together points toward this direction:</p>
+
+    <ul class="direction-list">
+      <li>Building and refining our own Life OS setups (Claude Code, agents, skills, automation)</li>
+      <li>Developing real expertise in this space before the market catches up</li>
+      <li>Growing Intelligence Masters as the brand that represents this capability</li>
+    </ul>
+
+    <div class="highlight-block">
+      <p>This isn't a side project. This is where 10x–30x growth lives. The people doing well in AI right now are already focused here. The ones who aren't will figure it out too late.</p>
+    </div>
+  </section>
+
+  <!-- HOW WE WORK TOGETHER -->
+  <section>
+    <h2>How We Work Together</h2>
+    <p>You're working with Intelligence Masters as an <strong>independent contractor</strong>. You're not an employee. You control your own schedule, tools, and methods. You're free to do other work independently.</p>
+    <p>There are two sides to this:</p>
+
+    <div class="card">
+      <h3>1. Contract Work <span style="font-weight:400;color:var(--text-secondary);font-size:14px">— per project</span></h3>
+      <p>When I have project work that makes sense to hand off, I'll send it your way. Each project is its own thing — we'll agree on the scope, deliverables, and your cut before you start.</p>
+      <div class="highlight-block">
+        <p>Default split on end-to-end handoffs: you get 60%, I keep 40%.</p>
+      </div>
+      <p>This can shift depending on the project — if I'm doing significant work on it too, or if you sourced the client yourself. We'll agree per project. You always know your number before you start.</p>
+      <p style="margin-bottom:0">You can say no to a project if it doesn't work for you. That's fine. Just communicate it.</p>
+    </div>
+
+    <div class="card">
+      <h3>2. Growing Under Intelligence Masters</h3>
+      <p>Instead of building a separate business entity from scratch (which is a 24/7 job on its own, as you know), you grow your professional presence through Intelligence Masters:</p>
+      <ul class="direction-list">
+        <li><strong>LinkedIn</strong> — Add Intelligence Masters to your profile. You're not unemployed — you're building.</li>
+        <li><strong>Content</strong> — Start posting. Even light activity. Your Claude Code Life OS can literally write posts for you. This grows you AND the company.</li>
+        <li><strong>Reputation</strong> — When people ask what you're doing, you've got a real answer. The bigger Intelligence Masters grows, the more it brings in for both of us.</li>
+      </ul>
+      <p style="margin-bottom:0">This is a two-way street. You contribute to the brand's visibility, the brand gives you a platform and a pipeline.</p>
+    </div>
+  </section>
+
+  <!-- WHAT I EXPECT -->
+  <section>
+    <h2>Expectations</h2>
+    <p>These aren't hard rules — they're the direction we're both heading.</p>
+
+    <div class="expect-grid">
+      <div class="expect-item">
+        <div class="number">1</div>
+        <h4>Build your Life OS</h4>
+        <p>This is priority number one. It makes you 3x more capable at half the effort. We share setups, we both get better.</p>
+      </div>
+      <div class="expect-item">
+        <div class="number">2</div>
+        <h4>Be professionally active</h4>
+        <p>Post on LinkedIn. Build a presence. This is something you'd need to do as a contractor anyway. The difference is you're doing it under a brand that already has momentum.</p>
+      </div>
+      <div class="expect-item">
+        <div class="number">3</div>
+        <h4>Be proactive</h4>
+        <p>No micromanagement. If you see something that should be done, do it. If you have an idea, bring it. Good judgment is expected — use it.</p>
+      </div>
+      <div class="expect-item">
+        <div class="number">4</div>
+        <h4>Deliver quality on project work</h4>
+        <p>When a project is handed off, it should be handled end-to-end. The less management needed, the more work flows your way.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section>
+    <h2>What You Can Expect From Me</h2>
+    <ul class="return-list">
+      <li><span class="check">&#10003;</span> Fair compensation — always agreed before work starts, always paid when I get paid</li>
+      <li><span class="check">&#10003;</span> Access to the Intelligence Masters client pipeline and brand</li>
+      <li><span class="check">&#10003;</span> Knowledge sharing — Life OS techniques, AI tools, industry direction, documentation</li>
+      <li><span class="check">&#10003;</span> Autonomy — I trust your judgment, I won't hover</li>
+      <li><span class="check">&#10003;</span> Honesty — if something isn't working, I'll tell you directly</li>
+    </ul>
+  </section>
+
+  <!-- THE LOOSE STUFF -->
+  <section>
+    <h2>The Loose Stuff</h2>
+    <div class="loose-grid">
+      <div class="loose-item">
+        <strong>Trial Period</strong>
+        <p>Let's get through 8 projects together and then we'll know how this works. We can revisit anything at that point.</p>
+      </div>
+      <div class="loose-item">
+        <strong>Walking Away</strong>
+        <p>Either of us can end this at any time. No hard feelings. Just communicate it. Mid-project? We'll figure out fair compensation.</p>
+      </div>
+      <div class="loose-item">
+        <strong>Client Confidentiality</strong>
+        <p>Don't share client details with anyone outside of our work together. Standard stuff.</p>
+      </div>
+      <div class="loose-item">
+        <strong>Your Own IP</strong>
+        <p>Your Life OS, your skills, your personal tools — that's yours. Always. Project work for clients belongs to the clients.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEXT STEPS -->
+  <section>
+    <h2>Next Steps</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-content">
+          <h4>Right now</h4>
+          <p>Start building your Life OS with Claude Code. I'll send you materials to get started.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-content">
+          <h4>This week</h4>
+          <p>Add Intelligence Masters to your LinkedIn. Start thinking about what content you want to put out.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-content">
+          <h4>When I have a project</h4>
+          <p>I'll send you the scope and we'll agree on terms before you touch anything.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer-section">
+    <p>This is the foundation. It'll evolve as we work together. If anything here doesn't sit right, tell me and we'll adjust. The point is we're both clear on where we're going and how we get there.</p>
+    <p class="sign-off">Let's cook.</p>
+    <p class="sign-off-sub">— Noah</p>
+  </div>
+
+</div>
+
+<div class="brand-footer">
+  INTELLIGENCE MASTERS &nbsp;&bull;&nbsp; 2026
+</div>
+
+</body>
+</html>

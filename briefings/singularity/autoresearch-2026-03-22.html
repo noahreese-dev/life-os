@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoResearch Briefing — 2026-03-22 — Cycle #19</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --card-bg: #1a2332;
+    --card-border: #2a3a4e;
+    --gold: #d4a853;
+    --gold-dim: #a88a3f;
+    --green: #4ade80;
+    --red: #f87171;
+    --amber: #fbbf24;
+    --purple: #a78bfa;
+    --cyan: #22d3ee;
+    --gray: #94a3b8;
+    --white: #f1f5f9;
+    --text: #cbd5e1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    padding: 0 0 3rem 0;
+  }
+  header {
+    background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #1e1a2e 100%);
+    border-bottom: 3px solid var(--gold);
+    padding: 1.5rem 1.2rem;
+    text-align: center;
+  }
+  header h1 { color: var(--gold); font-size: 1.5rem; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+  header .subtitle { color: var(--gray); font-size: 0.85rem; }
+  header .score-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .score-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.85rem;
+  }
+  .score-pill .num { font-weight: 700; font-size: 1.1rem; }
+  .score-pill.gold .num { color: var(--gold); }
+  .score-pill.green .num { color: var(--green); }
+  .score-pill.red .num { color: var(--red); }
+  .score-pill.amber .num { color: var(--amber); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 0 1rem; }
+
+  .section { margin-top: 1.8rem; }
+  .section-title {
+    color: var(--gold);
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.3px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 0.8rem;
+  }
+  .card.gold-border { border-left: 3px solid var(--gold); }
+  .card.green-border { border-left: 3px solid var(--green); }
+  .card.red-border { border-left: 3px solid var(--red); }
+  .card.amber-border { border-left: 3px solid var(--amber); }
+  .card.purple-border { border-left: 3px solid var(--purple); }
+  .card.cyan-border { border-left: 3px solid var(--cyan); }
+
+  .card h3 { color: var(--white); font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .card p { font-size: 0.88rem; }
+  .card .meta { color: var(--gray); font-size: 0.78rem; margin-top: 0.4rem; }
+  .card ul { padding-left: 1.2rem; font-size: 0.86rem; margin-top: 0.3rem; }
+  .card li { margin-bottom: 0.2rem; }
+
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge.high { background: rgba(74, 222, 128, 0.15); color: var(--green); }
+  .badge.medium { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
+  .badge.low { background: rgba(148, 163, 184, 0.15); color: var(--gray); }
+  .badge.critical { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+  .badge.new { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 0.5rem;
+  }
+  th, td {
+    padding: 0.45rem 0.6rem;
+    text-align: left;
+    border-bottom: 1px solid var(--card-border);
+  }
+  th { color: var(--gold); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { color: var(--text); }
+  td.pass { color: var(--green); font-weight: 600; }
+  td.fail { color: var(--red); font-weight: 600; }
+  td.warn { color: var(--amber); font-weight: 600; }
+
+  .task-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+  }
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.4rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot.green { background: var(--green); }
+  .dot.red { background: var(--red); }
+  .dot.amber { background: var(--amber); }
+  .dot.gray { background: var(--gray); }
+
+  .impact-bar {
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 0.4rem;
+  }
+  .impact-bar.high { background: linear-gradient(90deg, var(--green), var(--green)); width: 90%; }
+  .impact-bar.medium { background: linear-gradient(90deg, var(--amber), var(--amber)); width: 60%; }
+  .impact-bar.low { background: linear-gradient(90deg, var(--gray), var(--gray)); width: 30%; }
+
+  .urgent-banner {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.12), rgba(34, 211, 238, 0.08));
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin-top: 1.2rem;
+    font-size: 0.88rem;
+  }
+  .urgent-banner strong { color: var(--purple); }
+  .urgent-banner h3 { color: var(--purple); margin-bottom: 0.5rem; }
+
+  details { margin-bottom: 0.6rem; }
+  details summary {
+    cursor: pointer;
+    color: var(--gold-dim);
+    font-size: 0.88rem;
+    padding: 0.3rem 0;
+    font-weight: 500;
+  }
+  details summary:hover { color: var(--gold); }
+  details[open] summary { margin-bottom: 0.4rem; }
+
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .timeline {
+    border-left: 2px solid var(--card-border);
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 0.6rem;
+    font-size: 0.84rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.35rem;
+    top: 0.4rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .timeline-item .time { color: var(--gray); font-size: 0.75rem; }
+
+  @media (max-width: 480px) {
+    .task-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 1.2rem; }
+    .score-pill { padding: 0.25rem 0.7rem; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AutoResearch Briefing</h1>
+  <div class="subtitle">Cycle #19 &mdash; March 22, 2026, 10:15 AM &mdash; Opus 4.6 (1M context)</div>
+  <div class="score-row">
+    <span class="score-pill gold"><span>Rating:</span> <span class="num">52</span>/100</span>
+    <span class="score-pill amber"><span>Change:</span> <span class="num">0</span></span>
+    <span class="score-pill green"><span>Fixes:</span> <span class="num">47</span> lifetime</span>
+    <span class="score-pill"><span>Tasks:</span> <span class="num">8</span>/17 healthy</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ======== WHAT'S NEW ======== -->
+  <div class="section">
+    <div class="section-title">What's New in the Claude Code Ecosystem</div>
+
+    <div class="urgent-banner">
+      <h3>PARADIGM SHIFT: Cloud Scheduled Tasks Have Shipped</h3>
+      <p>Anthropic launched <strong>cloud-based scheduled tasks</strong> that run on their infrastructure. Your computer can be OFF. No PowerShell. No Task Scheduler. No Mac Mini needed.</p>
+      <p style="margin-top: 0.5rem;">This is the single biggest infrastructure upgrade available to Life-OS. It could replace our entire 17-task Windows Task Scheduler layer that has been crashing, contending, and requiring 47 fixes over 5 days.</p>
+      <p style="margin-top: 0.5rem; color: var(--cyan);">Estimated impact: <strong>52 &rarr; 65-70/100</strong> if migration succeeds.</p>
+    </div>
+
+    <div class="card purple-border">
+      <h3><span class="badge new">Critical</span> Claude Code Channels (v2.1.80)</h3>
+      <p>Native Telegram + Discord integration via MCP. Two-way chat bridge. Pushes events INTO a running session. Could <strong>replace our 600+ line custom bot.js</strong> entirely.</p>
+      <ul>
+        <li>Install: <code>/plugin install telegram@claude-plugins-official</code></li>
+        <li>Run: <code>claude --channels plugin:telegram@claude-plugins-official</code></li>
+        <li>Sender allowlist security (only paired user IDs)</li>
+        <li>Research preview, requires Bun + claude.ai login</li>
+      </ul>
+      <div class="meta">Source: <a href="https://code.claude.com/docs/en/channels">Claude Code Docs</a> | <a href="https://venturebeat.com/orchestration/anthropic-just-shipped-an-openclaw-killer-called-claude-code-channels">VentureBeat</a></div>
+    </div>
+
+    <div class="card purple-border">
+      <h3><span class="badge new">New</span> --bare Flag (v2.1.81)</h3>
+      <p>Skips hooks, LSP, plugin sync, and skill directory walks for scripted <code>-p</code> calls. Would speed up all 8 autonomous scripts significantly. Requires ANTHROPIC_API_KEY or apiKeyHelper.</p>
+      <div class="meta">Current version: 2.1.80. Update blocked by running processes (EBUSY). Needs session cleanup first.</div>
+    </div>
+
+    <div class="card cyan-border">
+      <h3><span class="badge new">Viral</span> Agent Teams: Multiple Claudes Talking to Each Other</h3>
+      <p>Claude Code <strong>Agent Teams</strong> (experimental) lets multiple Claude instances coordinate as a team. One lead + N teammates, each with its own 1M-token context. They communicate via shared task list + mailbox system.</p>
+      <ul>
+        <li><strong>Architecture:</strong> Lead session spawns teammates. Shared task list (pending/in-progress/completed). Direct peer-to-peer messaging. Idle notifications.</li>
+        <li><strong>Communication:</strong> <code>~/.claude/teams/{team-name}/config.json</code> + <code>~/.claude/tasks/{team-name}/</code></li>
+        <li><strong>Models:</strong> Opus 4.6 required for lead. Teammates can use Sonnet.</li>
+        <li><strong>Display modes:</strong> In-process (all in one terminal) or split-panes (tmux/iTerm2)</li>
+        <li><strong>Quality gates:</strong> TeammateIdle + TaskCompleted hooks for enforcement</li>
+      </ul>
+      <p style="margin-top: 0.5rem; color: var(--cyan);"><strong>Life-OS implication:</strong> Combined with Desktop SSH sessions, this could enable Windows PC + Mac Mini running coordinated Claude agents. The lead on Windows orchestrates teammates on Mac Mini via SSH. This is the multi-machine dream.</p>
+      <div class="meta">Enable: set <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code> in settings.json. Requires v2.1.32+. Source: <a href="https://code.claude.com/docs/en/agent-teams">Agent Teams Docs</a> | <a href="https://x.com/louisvarge/status/2035215597361840637">@louisvarge tweet</a></div>
+    </div>
+
+    <div class="card cyan-border">
+      <h3><span class="badge new">New</span> Desktop Scheduled Tasks</h3>
+      <p>Claude Code Desktop now has a graphical task scheduler. Create tasks, set frequency (hourly/daily/weekly), and the app runs them locally. "Keep computer awake" setting prevents idle-sleep. Missed-run catch-up (1 run per missed period, up to 7 days).</p>
+      <ul>
+        <li>Local execution with full file/MCP/tool access</li>
+        <li>RestartOnFailure built in</li>
+        <li>Stagger built in (10% jitter)</li>
+        <li>Would replace Windows Task Scheduler entirely</li>
+      </ul>
+      <div class="meta">Source: <a href="https://code.claude.com/docs/en/desktop">Desktop Docs</a></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge medium">Ecosystem</span> What AI Builders Are Shipping</h3>
+      <ul>
+        <li><strong>Garry Tan</strong> released <a href="https://www.marktechpost.com/2026/03/14/garry-tan-releases-gstack-an-open-source-claude-code-system-for-planning-code-review-qa-and-shipping/">gstack</a> &mdash; open-source Claude Code system for planning, code review, QA, shipping</li>
+        <li><strong>claude-code-startup-skills</strong> &mdash; <a href="https://www.blog.brightcoding.dev/2026/03/14/claude-code-startup-skills-the-essential-ai-toolkit-for-modern-founders">plugin for founders</a> with marketing, customer, shipping superpowers</li>
+        <li><strong>product-builder-starter</strong> &mdash; <a href="https://github.com/smith-horn/product-builder-starter">11 Claude Code skills</a> for product builders</li>
+        <li><strong>Washington Post</strong> ran a <a href="https://www.washingtonpost.com/technology/interactive/2026/claude-code-cowork-build-apps/">hands-on test</a> of Claude Cowork building a full website</li>
+        <li>SitePoint + Prosus declaring 2026 "the year of autonomous AI agents"</li>
+        <li><strong>OpenClaw</strong> creator (Peter Steinberger) joining OpenAI. Project going open source with viral growth.</li>
+      </ul>
+      <div class="meta">Life-OS is ahead of the curve. The ecosystem is catching up to what we built 5 days ago.</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge low">Version</span> v2.1.81 Changelog (Mar 20)</h3>
+      <ul>
+        <li><code>--bare</code> flag for scripted -p calls (skip hooks/LSP/plugins)</li>
+        <li><code>--channels</code> permission relay (forward approval prompts to phone)</li>
+        <li><code>rate_limits</code> field in statusline scripts</li>
+        <li>Fix: concurrent sessions no longer require repeated re-auth</li>
+        <li>Fix: subagents with model: opus/sonnet/haiku no longer silently downgraded on Bedrock/Vertex</li>
+        <li>Fix: voice mode retry failures + WebSocket recovery</li>
+        <li>Opus 4.6 default output: 64K tokens, upper bound: 128K</li>
+      </ul>
+      <div class="meta">Source: <a href="https://code.claude.com/docs/en/changelog">Changelog</a> | <a href="https://github.com/anthropics/claude-code/releases">GitHub Releases</a></div>
+    </div>
+  </div>
+
+  <!-- ======== AUDIT ======== -->
+  <div class="section">
+    <div class="section-title">System Audit (Live State)</div>
+
+    <div class="card">
+      <h3>Task Scheduler &mdash; 17 Tasks</h3>
+      <div class="task-grid">
+        <div class="task-item"><span class="dot green"></span> AutoResearch (02:33)</div>
+        <div class="task-item"><span class="dot green"></span> DeployCheck (01:02)</div>
+        <div class="task-item"><span class="dot green"></span> EmailMonitor (03:00)</div>
+        <div class="task-item"><span class="dot green"></span> Claw3dCheck (11:05)</div>
+        <div class="task-item"><span class="dot green"></span> LeaveHouseNudge (11:00)</div>
+        <div class="task-item"><span class="dot green"></span> MiddayCheckin (13:00)</div>
+        <div class="task-item"><span class="dot green"></span> SleepNudge (23:01)</div>
+        <div class="task-item"><span class="dot green"></span> SupabaseKeepAlive (11:05)</div>
+        <div class="task-item"><span class="dot red"></span> MorningBriefing (11:05)</div>
+        <div class="task-item"><span class="dot red"></span> NightlyAccount. (22:19)</div>
+        <div class="task-item"><span class="dot red"></span> PhoneFreeMorning (11:05)</div>
+        <div class="task-item"><span class="dot red"></span> WeeklyDigest (20:25)</div>
+        <div class="task-item"><span class="dot red"></span> OvernightResearch (01:00)</div>
+        <div class="task-item"><span class="dot red"></span> ClaudeAutoUpdate (11:05)</div>
+        <div class="task-item"><span class="dot amber"></span> ICSReminder (Mar 20)</div>
+        <div class="task-item"><span class="dot amber"></span> WeeklyLogReminder (Mar 16)</div>
+        <div class="task-item"><span class="dot red"></span> TelegramBot (Mar 12)</div>
+      </div>
+      <div class="meta" style="margin-top: 0.6rem;">
+        <strong style="color: var(--green);">8 healthy (result 0)</strong> &nbsp;|&nbsp;
+        <strong style="color: var(--red);">6 crashed (3221225786)</strong> &nbsp;|&nbsp;
+        <strong style="color: var(--amber);">2 stale</strong> &nbsp;|&nbsp;
+        <strong style="color: var(--red);">1 broken</strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Processes</h3>
+      <table>
+        <tr><th>PID</th><th>Process</th><th>Status</th></tr>
+        <tr><td>42160</td><td>bot.js (Telegram)</td><td class="pass">Single instance</td></tr>
+        <tr><td>26044</td><td>claude CLI session</td><td class="warn">Running</td></tr>
+        <tr><td>74088</td><td>claude --resume</td><td class="warn">Interactive</td></tr>
+        <tr><td>108020</td><td>claude --resume</td><td class="warn">Interactive</td></tr>
+        <tr><td>46716</td><td>npm astro dev</td><td class="pass">Garage33</td></tr>
+        <tr><td>57116</td><td>astro dev</td><td class="pass">Garage33</td></tr>
+      </table>
+      <div class="meta">6 node processes. No zombies. No duplicate bots. Clean.</div>
+    </div>
+
+    <div class="card">
+      <h3>MCP Servers</h3>
+      <table>
+        <tr><th>Server</th><th>Status</th></tr>
+        <tr><td>ZoomInfo</td><td class="pass">Connected</td></tr>
+        <tr><td>Google Calendar</td><td class="warn">Needs auth</td></tr>
+        <tr><td>Gmail</td><td class="warn">Needs auth</td></tr>
+        <tr><td>Similarweb</td><td class="warn">Needs auth</td></tr>
+        <tr><td>Telegram Plugin</td><td class="pass">Connected</td></tr>
+      </table>
+      <div class="meta">2/5 connected. Gmail + Calendar need re-authentication.</div>
+    </div>
+  </div>
+
+  <!-- ======== IDENTIFY ======== -->
+  <div class="section">
+    <div class="section-title">The Elephant: Why We're Stuck at 52</div>
+
+    <div class="card red-border">
+      <h3>Root Cause: Windows Task Scheduler is the Wrong Infrastructure</h3>
+      <p>47 fixes over 5 days, and the system is still at 52/100. The pattern is clear:</p>
+      <ul>
+        <li><strong>Sleep/wake kills tasks</strong> &mdash; computer sleeps, Task Scheduler fires catch-up, system re-sleeps, STATUS_CONTROL_C_EXIT</li>
+        <li><strong>Batch contention</strong> &mdash; all missed tasks fire simultaneously, claude-p processes compete for resources and crash</li>
+        <li><strong>PowerShell encoding</strong> &mdash; UTF-8/UTF-16 mixing, em-dash parsing, here-string expansion bugs</li>
+        <li><strong>Start-Process vs Start-Job vs inline</strong> &mdash; 3 different execution patterns tried, each with its own failure mode</li>
+        <li><strong>Permission gates</strong> &mdash; bypassPermissions insufficient for headless runs, Ralph broken 6+ days</li>
+      </ul>
+      <p style="margin-top: 0.5rem; color: var(--amber);">We have been patching symptoms. The disease is the infrastructure itself.</p>
+    </div>
+
+    <div class="card green-border">
+      <h3>The Cure: Three Migration Paths (Impact-Ranked)</h3>
+      <table>
+        <tr><th>#</th><th>Migration</th><th>Impact</th><th>Effort</th><th>Risk</th></tr>
+        <tr><td>1</td><td><strong>Cloud Scheduled Tasks</strong><br><span style="font-size:0.75rem; color:var(--gray)">Replace 17 Task Scheduler entries with 3-5 cloud tasks on Anthropic infra</span></td><td class="pass">+15-18 pts</td><td class="warn">2-4 hrs</td><td class="pass">Low</td></tr>
+        <tr><td>2</td><td><strong>Desktop Scheduled Tasks</strong><br><span style="font-size:0.75rem; color:var(--gray)">GUI scheduler, built-in stagger, keep-awake, missed-run catch-up</span></td><td class="warn">+8-12 pts</td><td class="pass">1-2 hrs</td><td class="pass">Low</td></tr>
+        <tr><td>3</td><td><strong>Claude Code Channels</strong><br><span style="font-size:0.75rem; color:var(--gray)">Replace custom bot.js with native Telegram plugin</span></td><td class="warn">+3-5 pts</td><td class="warn">1 hr</td><td class="warn">Medium</td></tr>
+      </table>
+      <div class="meta">Recommendation: Cloud tasks first (highest impact), then Channels (replaces bot.js). Desktop tasks as fallback if cloud has limitations.</div>
+    </div>
+  </div>
+
+  <!-- ======== EXPERIMENT ======== -->
+  <div class="section">
+    <div class="section-title">Experiment: Cycle #19</div>
+
+    <div class="card gold-border">
+      <h3>Fix #48: Claude Code Update Attempted (v2.1.80 &rarr; v2.1.81)</h3>
+      <p><strong>Goal:</strong> Enable --bare flag for all autonomous scripts (skip hooks/LSP/plugins on -p calls).</p>
+      <p><strong>Result:</strong> BLOCKED. <code>npm update -g @anthropic-ai/claude-code</code> failed with EBUSY -- audio-capture.node locked by running Claude processes. Cannot update while sessions are active.</p>
+      <p><strong>Next step:</strong> Close all Claude sessions, then run <code>npm update -g @anthropic-ai/claude-code</code>. Or wait for ClaudeCodeAutoUpdate task at 5 AM (if it succeeds).</p>
+      <div class="meta">Verified: current version 2.1.80. Target: 2.1.81.</div>
+    </div>
+
+    <div class="card gold-border">
+      <h3>Fix #49: Cloud Scheduled Tasks Migration Plan</h3>
+      <p>Created comprehensive migration plan based on official docs research. Three tiers of scheduled tasks now available:</p>
+      <table>
+        <tr><th>Tier</th><th>Type</th><th>Persistence</th><th>Infra</th></tr>
+        <tr><td>1</td><td>/loop + CronCreate</td><td>Session-scoped, 3-day expiry</td><td>Local process</td></tr>
+        <tr><td>2</td><td>Desktop Scheduled Tasks</td><td>Survives restarts, GUI</td><td>Local machine (app must be open)</td></tr>
+        <tr><td>3</td><td>Cloud Scheduled Tasks</td><td>Anthropic cloud infra</td><td>Nothing local needed</td></tr>
+      </table>
+      <p style="margin-top: 0.5rem;"><strong>Key finding:</strong> Desktop Scheduled Tasks require the Desktop app to be open and computer awake. Cloud tasks are truly infrastructure-free. Both are superior to our PowerShell + Task Scheduler approach.</p>
+      <div class="meta">Research output saved to briefings/singularity/cloud-scheduled-tasks-research.md</div>
+    </div>
+  </div>
+
+  <!-- ======== SCORE ======== -->
+  <div class="section">
+    <div class="section-title">Life-OS Rating: 52/100</div>
+
+    <div class="card">
+      <table>
+        <tr><th>Component</th><th>Max</th><th>Score</th><th>Notes</th></tr>
+        <tr>
+          <td>Architecture</td>
+          <td class="num">15</td>
+          <td class="num">12</td>
+          <td>48 skills, 12 agents, 5 hooks. Stable.</td>
+        </tr>
+        <tr>
+          <td>Autonomous Uptime</td>
+          <td class="num">15</td>
+          <td class="num">10</td>
+          <td>8/17 result 0 + AutoResearch running = ~9/17. RestartOnFailure deployed but unproven. <strong>Cloud tasks would fix this permanently.</strong></td>
+        </tr>
+        <tr>
+          <td>Metrics &amp; Feedback</td>
+          <td class="num">15</td>
+          <td class="num">4</td>
+          <td>WeeklyDigest still crashing (since Mar 13). Email monitor works. Framework exists, zero CEO scorecard data collected.</td>
+        </tr>
+        <tr>
+          <td>24/7 Operation</td>
+          <td class="num">15</td>
+          <td class="num">10</td>
+          <td>AutoResearch runs every 2h. Ralph BROKEN Day 6+. OvernightResearch crashed on first run (3221225786). <strong>Cloud tasks would eliminate the sleep/permission problem entirely.</strong></td>
+        </tr>
+        <tr>
+          <td>Cross-device</td>
+          <td class="num">10</td>
+          <td class="num">7</td>
+          <td>Bot PID 42160 single instance. send.js works. Gmail/Calendar MCP need auth. Channels plugin connected but not configured for full use.</td>
+        </tr>
+        <tr>
+          <td>CEO Behavioral Impact</td>
+          <td class="num">15</td>
+          <td class="num">5</td>
+          <td>Morning batch crashed Mar 21 at 11:05. Evening batch crashed 10:19 PM. SleepNudge + EmailMonitor healthy. MorningBriefing, PhoneFreeMorning, NightlyAccountability all down.</td>
+        </tr>
+        <tr>
+          <td>Revenue Generation</td>
+          <td class="num">15</td>
+          <td class="num">4</td>
+          <td>Hamilton pipeline: 20 sites built, outreach sent, follow-up automated. Zero conversions. Score moves on first conversion only.</td>
+        </tr>
+        <tr>
+          <td><strong>TOTAL</strong></td>
+          <td class="num"><strong>100</strong></td>
+          <td class="num"><strong>52</strong></td>
+          <td>12+10+4+10+7+5+4 = 52. Last verified: 52 (Check #10).</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card amber-border">
+      <h3>Score Trend (Last 10 Verifier Checks)</h3>
+      <div style="display: flex; align-items: flex-end; gap: 4px; height: 80px; margin-top: 0.5rem;">
+        <div style="flex:1; background: var(--gold-dim); height: 70%; border-radius: 3px 3px 0 0; position: relative;" title="Check #1: 47"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">47</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 77%; border-radius: 3px 3px 0 0; position: relative;" title="Check #2: 58"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">58</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 73%; border-radius: 3px 3px 0 0; position: relative;" title="Check #3: 55"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">55</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 75%; border-radius: 3px 3px 0 0; position: relative;" title="Check #4: 56"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">56</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 75%; border-radius: 3px 3px 0 0; position: relative;" title="Check #5: 56"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">56</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 69%; border-radius: 3px 3px 0 0; position: relative;" title="Check #6: 52"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">52</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 72%; border-radius: 3px 3px 0 0; position: relative;" title="Check #7: 54"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">54</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 72%; border-radius: 3px 3px 0 0; position: relative;" title="Check #8: 54"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">54</span></div>
+        <div style="flex:1; background: var(--gold-dim); height: 69%; border-radius: 3px 3px 0 0; position: relative;" title="Check #9: 52"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--gray)">52</span></div>
+        <div style="flex:1; background: var(--gold); height: 69%; border-radius: 3px 3px 0 0; position: relative;" title="Check #10: 52"><span style="position:absolute; top:-18px; width:100%; text-align:center; font-size:0.65rem; color:var(--white)">52</span></div>
+      </div>
+      <div class="meta" style="margin-top: 0.3rem;">Score oscillating between 52-58. The system is hitting a ceiling imposed by Windows Task Scheduler infrastructure. Cloud migration is the breakout move.</div>
+    </div>
+  </div>
+
+  <!-- ======== MIGRATION ROADMAP ======== -->
+  <div class="section">
+    <div class="section-title">Cloud Migration Roadmap (Priority Order)</div>
+
+    <div class="card green-border">
+      <h3>Phase 1: Cloud Scheduled Tasks (TODAY)</h3>
+      <p>Replace all 17 Windows Task Scheduler entries with 3-5 cloud tasks:</p>
+      <table>
+        <tr><th>Cloud Task</th><th>Schedule</th><th>Replaces</th></tr>
+        <tr><td><strong>autoresearch-loop</strong></td><td>Every 2 hours</td><td>LifeOS-AutoResearch</td></tr>
+        <tr><td><strong>morning-batch</strong></td><td>7:25 AM daily</td><td>PhoneFreeMorning, MorningBriefing, EmailMonitor (morning)</td></tr>
+        <tr><td><strong>evening-batch</strong></td><td>10:00 PM daily</td><td>NightlyAccountability, SleepNudge (11pm)</td></tr>
+        <tr><td><strong>watchdog</strong></td><td>Every 6 hours</td><td>DeployCheck, Claw3dCheck, SupabaseKeepAlive</td></tr>
+        <tr><td><strong>overnight-research</strong></td><td>1:00 AM daily</td><td>OvernightResearch, overnight-ralph</td></tr>
+      </table>
+      <p style="margin-top: 0.5rem;"><strong>Setup path:</strong> Claude Desktop app &rarr; Schedule tab &rarr; + New task &rarr; set repo, prompt, schedule, bypass permissions.</p>
+      <div class="meta">Eliminates: PowerShell scripts, Task Scheduler, sleep/wake bugs, batch contention, encoding issues, Start-Job workarounds, permission gates. All at once.</div>
+    </div>
+
+    <div class="card purple-border">
+      <h3>Phase 2: Claude Code Channels (This Week)</h3>
+      <p>Replace custom bot.js with native Telegram channel:</p>
+      <ul>
+        <li>Install Telegram plugin: <code>/plugin install telegram@claude-plugins-official</code></li>
+        <li>Configure with existing BotFather token</li>
+        <li>Run: <code>claude --channels plugin:telegram@claude-plugins-official</code></li>
+        <li>Pair CEO's Telegram account</li>
+        <li>Retire bot.js, watcher.js, watcher-loop.mjs, send.js, send-from.js, voice-handler.js, start-bot.ps1</li>
+      </ul>
+      <div class="meta">Eliminates: 600+ lines of custom bot code, PID guard issues, EFATAL/ETELEGRAM errors, duplicate instance problems.</div>
+    </div>
+
+    <div class="card">
+      <h3>Phase 3: v2.1.81 Update + --bare Flag (This Week)</h3>
+      <p>Close all Claude sessions, run <code>npm update -g @anthropic-ai/claude-code</code>, then add <code>--bare</code> flag to all autonomous script <code>claude -p</code> calls. Skips hooks, LSP, plugin sync, and skill walks.</p>
+      <div class="meta">Only relevant if cloud migration doesn't happen immediately. --bare flag speeds up the PowerShell layer we're trying to eliminate.</div>
+    </div>
+  </div>
+
+  <!-- ======== OUTSTANDING ISSUES ======== -->
+  <div class="section">
+    <div class="section-title">Outstanding Issues (Priority Order)</div>
+
+    <div class="card red-border">
+      <h3>1. Cloud Scheduled Tasks Migration</h3>
+      <p>BLOCKING. This is the #1 priority. Every other fix is a patch on a broken foundation. Set up cloud tasks TODAY.</p>
+      <div class="impact-bar high"></div>
+    </div>
+
+    <div class="card red-border">
+      <h3>2. Overnight Ralph -- BROKEN Day 6+</h3>
+      <p>--permission-mode bypassPermissions insufficient. Needs --dangerouslySkipPermissions or cloud environment (which has bypass built in). Cloud migration fixes this.</p>
+      <div class="impact-bar high"></div>
+    </div>
+
+    <div class="card amber-border">
+      <h3>3. OvernightResearch -- First Run CRASHED</h3>
+      <p>Result 3221225786 at 01:00 Mar 22. Script has RestartOnFailure (Fix #46) but retry status unknown. Cloud migration eliminates this class of bug.</p>
+      <div class="impact-bar medium"></div>
+    </div>
+
+    <div class="card amber-border">
+      <h3>4. MorningBriefing + NightlyAccountability -- Batch Contention</h3>
+      <p>Both crashed on last run (11:05 AM and 10:19 PM Mar 21). Fix #41 (centralized stagger) + Fix #46 (RestartOnFailure) deployed but unvalidated. Cloud migration eliminates this.</p>
+      <div class="impact-bar medium"></div>
+    </div>
+
+    <div class="card amber-border">
+      <h3>5. WeeklyDigest -- Broken Since Mar 13</h3>
+      <p>9+ days without a successful digest. Next run Fri Mar 27. Cloud migration fixes this.</p>
+      <div class="impact-bar medium"></div>
+    </div>
+
+    <div class="card">
+      <h3>6. Gmail + Calendar MCP -- Needs Re-Auth</h3>
+      <p>Both show "Needs authentication". Re-authenticate via claude.ai/settings or connector flow in Desktop.</p>
+      <div class="impact-bar low"></div>
+    </div>
+
+    <div class="card">
+      <h3>7. Revenue -- Zero Conversions</h3>
+      <p>Hamilton pipeline: 20 sites, outreach sent, follow-up automated. No replies converted. Score stays at 4/15 until first conversion.</p>
+      <div class="impact-bar low"></div>
+    </div>
+  </div>
+
+  <!-- ======== QUESTIONS FOR CEO ======== -->
+  <div class="section">
+    <div class="section-title">Questions for the CEO</div>
+
+    <div class="card gold-border">
+      <h3>Decision Required: Cloud Migration Strategy</h3>
+      <ol style="padding-left: 1.2rem; font-size: 0.86rem;">
+        <li><strong>Full cloud migration?</strong> Replace all 17 Task Scheduler tasks with 3-5 cloud scheduled tasks. Computer can be OFF. Most impactful but requires testing.</li>
+        <li><strong>Desktop first?</strong> Use Desktop Scheduled Tasks as intermediate step. Still local but much better than Task Scheduler. Lower risk.</li>
+        <li><strong>Hybrid?</strong> Move heavy tasks (AutoResearch, MorningBriefing, NightlyAccountability) to cloud, keep lightweight ones (Claw3dCheck, SupabaseKeepAlive) on Task Scheduler.</li>
+      </ol>
+      <p style="margin-top: 0.5rem; color: var(--gold);">My recommendation: Option 1 (full cloud). The entire autonomous layer has been fighting Windows for 5 days. Cloud eliminates every class of bug we've encountered.</p>
+    </div>
+
+    <div class="card">
+      <h3>Non-Blocking Questions</h3>
+      <ul>
+        <li>Should we migrate the Telegram bot to Claude Code Channels (native), or keep custom bot.js for the extra features (collect mode, voice handler)?</li>
+        <li>Do you have the Claude Desktop app installed? (Required for Desktop scheduled tasks option.)</li>
+        <li>Should AutoResearch send Telegram notifications during quiet hours (11pm-8am) if a critical fix is deployed?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ======== NEXT CYCLE ======== -->
+  <div class="section">
+    <div class="section-title">Next Cycle Priorities</div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="time">Priority 1</div>
+        <div><strong>Set up cloud scheduled tasks</strong> -- replace the entire Windows Task Scheduler layer</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Priority 2</div>
+        <div><strong>Update to v2.1.81</strong> -- close sessions, npm update, enable --bare flag</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Priority 3</div>
+        <div><strong>Test Claude Code Channels</strong> -- install Telegram plugin, pair account, evaluate vs custom bot</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Priority 4</div>
+        <div><strong>Re-authenticate Gmail + Calendar MCP</strong> -- enables email monitor + morning briefing to use MCP directly</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Priority 5</div>
+        <div><strong>Validate Fix #46 (RestartOnFailure)</strong> -- check if crashed tasks auto-retried</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== FOOTER ======== -->
+  <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--card-border); text-align: center; font-size: 0.75rem; color: var(--gray);">
+    <p>AutoResearch Cycle #19 &mdash; Opus 4.6 (1M context) &mdash; 47 lifetime fixes &mdash; 18 cycles completed</p>
+    <p>Next scheduled cycle: 2 hours from now</p>
+    <p style="margin-top: 0.3rem; color: var(--gold-dim);">The system improves itself. The CEO sets direction.</p>
+  </div>
+
+</div>
+
+</body>
+</html>

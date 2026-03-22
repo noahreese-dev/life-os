@@ -5,7 +5,7 @@
 . "$PSScriptRoot\..\config.ps1"
 
 $message = @"
-MONDAY — WEEKLY LOG DUE
+MONDAY -- WEEKLY LOG DUE
 
 Open Life-OS and run /weekly-plan.
 

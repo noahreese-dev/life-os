@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overnight Brief — March 18, 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  :root { --bg:#0f0f0f; --surface:#1a1a1a; --surface2:#242424; --text:#e5e5e5; --muted:#888; --accent:#f59e0b; --green:#22c55e; --red:#ef4444; --blue:#3b82f6; --border:#2a2a2a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.6; font-size:15px; }
+  .header { background:linear-gradient(135deg,#1a1a2e,#16213e); padding:40px 24px 32px; text-align:center; border-bottom:2px solid var(--accent); }
+  .header h1 { font-size:24px; font-weight:700; margin-bottom:4px; }
+  .header .sub { color:var(--muted); font-size:13px; }
+  .score-banner { display:flex; justify-content:center; gap:32px; padding:24px; background:var(--surface); border-bottom:1px solid var(--border); }
+  .score-item { text-align:center; }
+  .score-item .num { font-size:36px; font-weight:700; }
+  .score-item .num.before { color:var(--muted); }
+  .score-item .num.after { color:var(--green); }
+  .score-item .label { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .arrow { font-size:28px; color:var(--accent); align-self:center; }
+  .container { max-width:680px; margin:0 auto; padding:0 16px; }
+  section { padding:28px 0; border-bottom:1px solid var(--border); }
+  h2 { font-size:16px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:16px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:12px; }
+  .card h3 { font-size:15px; font-weight:600; margin-bottom:8px; }
+  .card p { color:var(--muted); font-size:13px; margin-bottom:0; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; margin-right:6px; }
+  .tag.fixed { background:#22c55e22; color:var(--green); }
+  .tag.new { background:#3b82f622; color:var(--blue); }
+  .tag.research { background:#f59e0b22; color:var(--accent); }
+  .component-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:16px 0; }
+  .comp { background:var(--surface2); border-radius:8px; padding:12px; }
+  .comp .name { font-size:11px; color:var(--muted); text-transform:uppercase; }
+  .comp .val { font-size:20px; font-weight:700; }
+  .comp .max { font-size:12px; color:var(--muted); }
+  .question { background:var(--surface); border-left:3px solid var(--accent); padding:12px 16px; margin-bottom:10px; border-radius:0 8px 8px 0; }
+  .question .q { font-size:14px; font-weight:500; }
+  .question .context { font-size:12px; color:var(--muted); margin-top:4px; }
+  .priority { display:inline-block; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:600; }
+  .priority.low { background:#3b82f622; color:var(--blue); }
+  .priority.med { background:#f59e0b22; color:var(--accent); }
+  .footer { text-align:center; padding:24px; color:var(--muted); font-size:11px; }
+  @media(max-width:500px) { .component-grid { grid-template-columns:1fr; } .score-banner { gap:16px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Overnight Brief</h1>
+  <div class="sub">AutoResearch Agent — March 18, 2026</div>
+</div>
+
+<div class="score-banner">
+  <div class="score-item"><div class="num before">42</div><div class="label">Before</div></div>
+  <div class="arrow">→</div>
+  <div class="score-item"><div class="num after">44</div><div class="label">After</div></div>
+</div>
+
+<div class="container">
+
+<section>
+  <h2>What Got Done</h2>
+  <div class="card">
+    <h3><span class="tag fixed">Fixed</span> DeployCheck Root Cause</h3>
+    <p>Unicode em-dash characters in deploy-check.ps1 caused PowerShell parser abort. Replaced 5 em-dashes with ASCII hyphens. Manual test confirmed claude -p command now spawns successfully. This was the script that kept failing even after the budget fix.</p>
+  </div>
+  <div class="card">
+    <h3><span class="tag fixed">Fixed</span> Telegram Bot Duplicate Instance</h3>
+    <p>Two bot.js processes were polling the same token — caused 697+ ETELEGRAM errors and message drops. Killed the duplicate. Single instance now running with healthy heartbeat.</p>
+  </div>
+  <div class="card">
+    <h3><span class="tag fixed">Fixed</span> ICS Reminder Script</h3>
+    <p>ics-call-reminder.ps1 was missing config.ps1 sourcing — couldn't resolve the telegram send.js path. Fixed. Your 9am and 11am reminders will actually work tomorrow.</p>
+  </div>
+  <div class="card">
+    <h3><span class="tag fixed">Fixed</span> SleepNudge Validated</h3>
+    <p>First successful run at 11pm March 17, result code 0, Telegram message delivered. Budget fix confirmed working.</p>
+  </div>
+  <div class="card">
+    <h3><span class="tag new">New</span> Mac Mini Deploy Package Complete</h3>
+    <p>19 files ready in Tools/mac-mini-deploy/. Created: QUICKSTART.md (5-min guide), CLAUDE-macmini.md (stripped for server role), .mcp.json (Google Workspace). Updated setup.sh to include Remote Control as a launchd service with --capacity 8.</p>
+  </div>
+  <div class="card">
+    <h3><span class="tag research">Research</span> System Optimization Findings</h3>
+    <p>Remote Control supports 32 concurrent sessions inside tmux. Daniel Miessler's PAI v4.0.3 worth studying (10-file identity system). Karpathy AutoResearch went viral Mar 17 — Fortune coverage. Full findings in briefings/overnight-research-20260318.md.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Score Breakdown</h2>
+  <div class="component-grid">
+    <div class="comp"><div class="name">Architecture</div><div class="val">12<span class="max">/15</span></div></div>
+    <div class="comp"><div class="name">Autonomous Uptime</div><div class="val" style="color:var(--green)">8<span class="max">/15 ↑</span></div></div>
+    <div class="comp"><div class="name">Metrics Loop</div><div class="val">3<span class="max">/15</span></div></div>
+    <div class="comp"><div class="name">24/7 Operation</div><div class="val" style="color:var(--green)">3<span class="max">/15 ↑</span></div></div>
+    <div class="comp"><div class="name">Cross-Device</div><div class="val" style="color:var(--green)">6<span class="max">/10 ↑</span></div></div>
+    <div class="comp"><div class="name">CEO Impact</div><div class="val">6<span class="max">/15</span></div></div>
+    <div class="comp"><div class="name">Revenue Gen</div><div class="val">7<span class="max">/15</span></div></div>
+  </div>
+  <p style="color:var(--muted);font-size:12px;margin-top:8px;">↑ = improved this cycle. Next milestone: 50/100 (requires Mac Mini always-on + 7 days scorecard data)</p>
+</section>
+
+<section>
+  <h2>Still Broken / Pending</h2>
+  <div class="card">
+    <h3>MorningBriefing + EmailMonitor</h3>
+    <p>Budget fixes deployed but no post-fix run observed yet. Tomorrow's 8:30am and 9:00am runs are the real test.</p>
+  </div>
+  <div class="card">
+    <h3>WeeklyDigest</h3>
+    <p>Budget fixed, but next run isn't until Friday March 20 at 7pm.</p>
+  </div>
+  <div class="card">
+    <h3>Mac Mini not yet set up</h3>
+    <p>Deploy package is ready and syncing via Obsidian. CEO needs 5 minutes on the Mac Mini to run setup.sh.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Questions for You</h2>
+  <div class="question">
+    <span class="priority med">Medium</span>
+    <div class="q">What's the Mac Mini's username and Obsidian vault path?</div>
+    <div class="context">setup.sh assumes ~/life-os but the Obsidian vault might sync to a different location on macOS (e.g. ~/Documents/Life-OS or ~/Library/Mobile Documents/...). Knowing this lets me pre-configure the path.</div>
+  </div>
+  <div class="question">
+    <span class="priority low">Low</span>
+    <div class="q">Should the Mac Mini run Remote Control permanently?</div>
+    <div class="context">setup.sh now includes it as a launchd service with --capacity 8. This means you can connect from your phone anytime. But it uses API credits while idle. Want it always-on or on-demand?</div>
+  </div>
+  <div class="question">
+    <span class="priority low">Low</span>
+    <div class="q">Daniel Miessler's PAI has a 3-tier memory system worth studying. Want me to deep-dive it next overnight?</div>
+    <div class="context">His TELOS identity system and duration-aware notifications could improve our CEO Impact score. Low priority but high potential.</div>
+  </div>
+</section>
+
+<section>
+  <h2>Today's Priorities</h2>
+  <div class="card" style="border-left:3px solid var(--red);">
+    <h3>1. Finalize HW Ad+ video → send to Boz</h3>
+    <p>Demo is TODAY (March 19). No more days.</p>
+  </div>
+  <div class="card" style="border-left:3px solid var(--accent);">
+    <h3>2. Call ICS — Day 18</h3>
+    <p>Two reminders set: 9am and 11am. Script is now fixed.</p>
+  </div>
+  <div class="card" style="border-left:3px solid var(--blue);">
+    <h3>3. Demo prep</h3>
+    <p>Presentation materials for the March 19 demo.</p>
+  </div>
+</section>
+
+</div>
+
+<div class="footer">Life-OS AutoResearch Agent — Cycle #2 — 108 tool calls — Score: 42 → 44</div>
+
+</body>
+</html>

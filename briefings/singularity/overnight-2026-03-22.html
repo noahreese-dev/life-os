@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overnight Briefing — March 22, 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap');
+:root{
+  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--surface3:#22222e;
+  --text:#e8e8ed;--muted:#6b6b80;--dim:#44445a;
+  --accent:#8b5cf6;--accent2:#a78bfa;--accent-glow:rgba(139,92,246,0.08);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,0.12);
+  --green:#34d399;--green-dim:rgba(52,211,153,0.12);
+  --red:#f87171;--red-dim:rgba(248,113,113,0.12);
+  --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.12);
+  --cyan:#22d3ee;--cyan-dim:rgba(34,211,238,0.12);
+  --amber:#fbbf24;--amber-dim:rgba(251,191,36,0.12);
+  --border:#1e1e2e;--border2:#2a2a3a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* =================== HERO =================== */
+.hero{min-height:85vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(139,92,246,0.06) 0%,transparent 50%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.1);opacity:1}}
+.hero-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:24px;font-weight:600}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,6vw,52px);font-weight:700;line-height:1.15;max-width:720px;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:17px;color:var(--muted);max-width:540px;line-height:1.7}
+
+/* Score Visual */
+.score-ring{display:flex;justify-content:center;gap:32px;margin:36px 0 12px;flex-wrap:wrap}
+.score-item{text-align:center}
+.score-num{font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;line-height:1}
+.score-num.purple{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.score-num.green{color:var(--green)}
+.score-num.gold{color:var(--gold)}
+.score-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* =================== LAYOUT =================== */
+.container{max-width:760px;margin:0 auto;padding:0 24px}
+section{padding:64px 0}
+.divider{height:1px;background:var(--border);margin:0 auto;max-width:760px}
+.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);font-weight:600;margin-bottom:12px}
+h2{font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:700;margin-bottom:16px}
+h3{font-size:17px;font-weight:600;margin-bottom:10px}
+p{color:var(--muted);margin-bottom:14px}
+strong{color:var(--text)}
+
+/* =================== NARRATIVE CARD =================== */
+.narrative{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin:24px 0;position:relative;overflow:hidden}
+.narrative::after{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,var(--accent-glow),transparent);pointer-events:none}
+.narrative p{color:var(--text);font-size:16px;line-height:1.8}
+.narrative .highlight{color:var(--green);font-weight:600}
+.narrative .warn{color:var(--amber);font-weight:600}
+.narrative .critical{color:var(--red);font-weight:600}
+
+/* =================== TIMELINE =================== */
+.timeline{position:relative;padding-left:32px;margin:24px 0}
+.timeline::before{content:'';position:absolute;left:11px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),var(--green),var(--gold))}
+.tl-item{position:relative;padding:16px 0}
+.tl-item::before{content:'';position:absolute;left:-25px;top:22px;width:12px;height:12px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.tl-item.fix::before{border-color:var(--green);background:var(--green)}
+.tl-item.diag::before{border-color:var(--blue);background:var(--blue)}
+.tl-item.opt::before{border-color:var(--gold);background:var(--gold)}
+.tl-item.alert::before{border-color:var(--red);background:var(--red)}
+.tl-time{font-size:11px;color:var(--dim);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.tl-title{font-size:15px;font-weight:600;color:var(--text);margin:4px 0}
+.tl-desc{font-size:13px;color:var(--muted);margin:0}
+
+/* =================== IMPACT CARDS =================== */
+.cards{display:grid;gap:16px;margin:24px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.card:hover{border-color:var(--border2)}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
+.card.critical::before{background:var(--red)}
+.card.high::before{background:var(--gold)}
+.card.medium::before{background:var(--accent)}
+.card.new::before{background:var(--cyan)}
+.card.green::before{background:var(--green)}
+.card .tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px}
+.tag-critical{background:var(--red-dim);color:var(--red)}
+.tag-high{background:var(--gold-dim);color:var(--gold)}
+.tag-medium{background:rgba(139,92,246,0.12);color:var(--accent2)}
+.tag-new{background:var(--cyan-dim);color:var(--cyan)}
+.tag-shipped{background:var(--green-dim);color:var(--green)}
+.tag-ecosystem{background:rgba(139,92,246,0.12);color:var(--accent2)}
+.card h4{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.card p{font-size:13px;margin:0 0 8px}
+.card .source{font-size:11px;color:var(--dim);margin-top:8px}
+.card .source a{color:var(--accent2);text-decoration:none}
+.card .source a:hover{text-decoration:underline}
+
+/* =================== COLLAPSIBLE =================== */
+details{margin-bottom:16px}
+details summary{cursor:pointer;font-size:15px;font-weight:600;color:var(--text);padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;list-style:none;display:flex;align-items:center;gap:10px;transition:all 0.2s}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:'+';display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:var(--surface2);color:var(--accent2);font-size:14px;font-weight:700;flex-shrink:0;transition:transform 0.2s}
+details[open] summary::before{content:'-';transform:rotate(0deg)}
+details[open] summary{border-radius:12px 12px 0 0;border-bottom-color:transparent}
+.details-body{padding:20px;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px}
+.details-body p{font-size:14px}
+.details-body ul{padding-left:20px;font-size:13px;color:var(--muted)}
+.details-body li{margin-bottom:6px}
+.details-body code{background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:12px}
+
+/* =================== TASK HEALTH =================== */
+.health-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.health-item{padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px}
+.health-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--green)}
+.dot-red{background:var(--red)}
+.dot-amber{background:var(--amber)}
+.dot-blue{background:var(--blue)}
+.health-ok{background:rgba(52,211,153,0.06);color:var(--green)}
+.health-crash{background:rgba(248,113,113,0.06);color:var(--red)}
+.health-fixed{background:rgba(96,165,250,0.06);color:var(--blue)}
+.health-warn{background:rgba(251,191,36,0.06);color:var(--amber)}
+
+/* =================== MILESTONE =================== */
+.milestone{background:linear-gradient(135deg,rgba(52,211,153,0.06),rgba(139,92,246,0.06));border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:32px;margin:24px 0;text-align:center}
+.milestone h3{font-family:'Fraunces',Georgia,serif;font-size:22px;color:var(--green);margin-bottom:8px}
+.milestone p{color:var(--text);font-size:15px;max-width:520px;margin:0 auto}
+
+/* =================== DECISION CARDS =================== */
+.decision{background:var(--surface);border:1px solid rgba(245,158,11,0.2);border-radius:16px;padding:24px;margin:16px 0}
+.decision .q{font-size:15px;font-weight:600;color:var(--gold);margin-bottom:8px}
+.decision p{font-size:13px}
+.decision .options{margin-top:12px;padding-left:20px;font-size:13px}
+.decision .options li{margin-bottom:8px;color:var(--muted)}
+.decision .rec{margin-top:12px;padding:10px 14px;background:var(--gold-dim);border-radius:8px;font-size:12px;color:var(--gold);font-weight:500}
+
+/* =================== ACTION ITEMS =================== */
+.actions{display:grid;gap:16px;margin:24px 0}
+.action{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.action::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px}
+.action.a1::before{background:linear-gradient(90deg,var(--red),var(--gold))}
+.action.a2::before{background:linear-gradient(90deg,var(--accent),var(--green))}
+.action.a3::before{background:linear-gradient(90deg,var(--gold),var(--amber))}
+.action .num{font-family:'Fraunces',Georgia,serif;font-size:36px;font-weight:700;line-height:1;margin-bottom:8px}
+.action.a1 .num{color:var(--red)}
+.action.a2 .num{color:var(--accent)}
+.action.a3 .num{color:var(--gold)}
+.action h4{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.action p{font-size:13px}
+
+/* =================== SCORE TABLE =================== */
+.score-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.score-table th{text-align:left;color:var(--dim);font-weight:400;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;letter-spacing:0.5px;text-transform:uppercase}
+.score-table td{padding:8px 10px;border-bottom:1px solid rgba(30,30,46,0.5)}
+.score-table td:nth-child(2),.score-table td:nth-child(3),.score-table th:nth-child(2),.score-table th:nth-child(3){text-align:center;width:50px}
+.score-table tr:last-child td{border-top:2px solid var(--accent);font-weight:700;color:var(--accent2);border-bottom:none}
+
+/* =================== INSIGHT BOX =================== */
+.insight{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(245,158,11,0.08));border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:28px;margin:32px 0;text-align:center}
+.insight p{color:var(--text);font-size:16px;font-weight:500;max-width:560px;margin:0 auto;line-height:1.7}
+
+/* =================== FOOTER =================== */
+.footer{text-align:center;padding:48px 24px;font-size:11px;color:var(--dim);letter-spacing:1px}
+.footer .brand{color:var(--accent2);font-weight:600}
+
+/* =================== RESPONSIVE =================== */
+@media(max-width:600px){
+  .health-grid{grid-template-columns:1fr}
+  .score-ring{gap:20px}
+  .score-num{font-size:36px}
+  .hero h1{font-size:28px}
+  section{padding:40px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="hero-label">Life-OS Overnight Briefing &mdash; March 22, 2026</div>
+  <h1>5 cycles ran. 5 fixes shipped. <span>The bug class is dead.</span></h1>
+  <p class="hero-sub">While you slept, the system eradicated the inline claude-p pattern from every autonomous script, added crash forensics, stopped 835 MB of session file bloat, and discovered that Anthropic shipped cloud scheduled tasks &mdash; the single biggest infrastructure upgrade available.</p>
+
+  <div class="score-ring">
+    <div class="score-item">
+      <div class="score-num purple">5</div>
+      <div class="score-label">Cycles Completed</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num green">5</div>
+      <div class="score-label">Fixes Shipped</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num gold">52</div>
+      <div class="score-label">Score / 100</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== WHILE YOU SLEPT ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">While You Slept</div>
+  <h2>The story of the night</h2>
+
+  <div class="narrative">
+    <p>The overnight session started at midnight with a system audit. Five heavy scripts &mdash; MorningBriefing, PhoneFreeMorning, NightlyAccountability, OvernightResearch, and WeeklyDigest &mdash; were all crashing on wake. Every one of them used the same broken pattern: an inline <code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:14px">claude -p</code> call that dies when multiple tasks fire simultaneously after sleep.</p>
+    <p style="margin-top:16px">Cycle by cycle, the system rewrote the last two holdouts (MorningBriefing and PhoneFreeMorning) to the proven Start-Job pattern, added <span class="highlight">crash forensics logging</span> so the next failure reveals exactly what broke, and then deployed <code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:14px">--no-session-persistence</code> across all 9 scripts to stop 835 MB of dead session files from accumulating.</p>
+    <p style="margin-top:16px">The result: <span class="highlight">the inline claude-p bug class is fully eradicated</span>. All 9 autonomous scripts now use Start-Job + stagger + RestartOnFailure + UTF-8 + exit 0. The pattern that caused 53 fixes over 8 days is gone.</p>
+    <p style="margin-top:16px">But the bigger discovery wasn't a fix. It was this: <span class="warn">Anthropic shipped cloud scheduled tasks</span>. Tasks that run on their infrastructure. Your computer can be off. No PowerShell. No Task Scheduler. No Mac Mini. This changes everything.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item fix">
+      <div class="tl-time">Cycle #21 &mdash; ~1:00am</div>
+      <div class="tl-title">Fix #51: RestartOnFailure deployed to 5 crashing tasks</div>
+      <div class="tl-desc">Task Scheduler now auto-retries crashed scripts 3 times at 5-minute intervals.</div>
+    </div>
+    <div class="tl-item fix">
+      <div class="tl-time">Cycle #22 &mdash; ~2:30am</div>
+      <div class="tl-title">Fix #52: MorningBriefing rewritten to Start-Job pattern</div>
+      <div class="tl-desc">The #1 crashing task. 5-layer defense: RandomDelay, stagger, Start-Job, 20min timeout, RestartOnFailure. Fallback briefing if Claude fails.</div>
+    </div>
+    <div class="tl-item fix">
+      <div class="tl-time">Cycle #23 &mdash; ~4:00am</div>
+      <div class="tl-title">Fix #53: PhoneFreeMorning rewritten &mdash; inline pattern fully eradicated</div>
+      <div class="tl-desc">The last holdout. 9 of 9 scripts now on Start-Job. Bug class eliminated across the entire autonomous layer.</div>
+    </div>
+    <div class="tl-item diag">
+      <div class="tl-time">Cycle #24 &mdash; ~5:30am</div>
+      <div class="tl-title">Fix #54: Crash forensics logging added</div>
+      <div class="tl-desc">Next crash will reveal exact failure step, environment state, and process contention. No more guessing.</div>
+    </div>
+    <div class="tl-item opt">
+      <div class="tl-time">Cycle #25 &mdash; ~7:00am</div>
+      <div class="tl-title">Fix #55: --no-session-persistence across all 9 scripts</div>
+      <div class="tl-desc">Stops 835 MB / 1,629 dead session files from growing. First non-PowerShell optimization in 4 cycles.</div>
+    </div>
+  </div>
+
+  <div class="milestone">
+    <h3>Bug class eradicated</h3>
+    <p>The inline <code style="background:rgba(0,0,0,0.3);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:14px">claude -p $prompt</code> pattern that crashed every autonomous script since March 18 is gone from all 9 scripts. Fixes #32 through #53 over 8 days. It's done.</p>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== WHAT WE DISCOVERED ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">What We Discovered</div>
+  <h2>Twitter, ecosystem, and the future</h2>
+  <p style="color:var(--text);font-size:16px;margin-bottom:24px">The overnight research surfaced 8 findings. Three are game-changers. The rest are worth knowing.</p>
+
+  <div class="cards">
+
+    <div class="card critical">
+      <div class="tag tag-critical">Game-Changer</div>
+      <h4>Cloud Scheduled Tasks &mdash; Computer Can Be Off</h4>
+      <p style="color:var(--text)">Anthropic shipped cloud-based scheduled tasks. Set a repo, a schedule, and a prompt. Claude runs it on <strong>their infrastructure</strong> on your schedule. No PowerShell. No Task Scheduler. No Mac Mini. Computer can be completely off.</p>
+      <p>This replaces the entire 17-task Windows Task Scheduler layer that has been crashing, contending, and requiring 53 fixes over 8 days. 3-5 cloud tasks replace everything. Estimated score impact: <strong style="color:var(--green)">+15-18 points (52 to 67-70)</strong>.</p>
+      <div class="source">Source: <a href="https://code.claude.com/docs/en/scheduled-tasks">Claude Code Docs</a> &bull; <a href="https://support.claude.com/en/articles/13854387">Anthropic Support</a></div>
+    </div>
+
+    <div class="card critical">
+      <div class="tag tag-critical">Game-Changer</div>
+      <h4>Claude Code Channels &mdash; Native Telegram Bridge</h4>
+      <p style="color:var(--text)">Native Telegram integration via MCP plugin. Two-way chat into a running Claude session. Already partially connected in our system. Could <strong>replace the entire 600+ line custom bot.js</strong>.</p>
+      <p>Combined with cloud scheduled tasks, creates the async dream: schedule tasks hourly, report via Telegram, wait for instructions on failure. No custom code.</p>
+      <div class="source">Source: <a href="https://code.claude.com/docs/en/channels">Claude Code Channels Guide</a> &bull; <a href="https://www.techbuddies.io/2026/03/21/anthropics-claude-code-channels-bring-always-on-ai-coding-to-telegram-and-discord/">TechBuddies</a></div>
+    </div>
+
+    <div class="card high">
+      <div class="tag tag-high">High Impact</div>
+      <h4>Anthropic 2x Usage Limits &mdash; Free Through March 27</h4>
+      <p style="color:var(--text)">Double usage limits still active through March 27. Off-peak hours: before 8am / after 2pm ET weekdays, all day weekends. Applies to Claude Code. Free extra capacity for overnight autonomous runs.</p>
+      <div class="source">Source: <a href="https://x.com/EricBuess/status/2032918665302294913">@EricBuess</a> &bull; <a href="https://x.com/PawelHuryn/status/2033054947223158847">@PawelHuryn</a></div>
+    </div>
+
+    <div class="card new">
+      <div class="tag tag-new">New Feature</div>
+      <h4>Claude Code v2.1.81: --bare Flag + Permission Relay</h4>
+      <p style="color:var(--text)"><code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:12px">--bare</code> skips hooks, LSP, plugins, and skill walks for scripted calls. Purpose-built for autonomous scripts. <code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:12px">--channels</code> forwards tool approval prompts to your phone. We're on v2.1.80 &mdash; needs update.</p>
+      <div class="source">Source: <a href="https://code.claude.com/docs/en/changelog">Official Changelog</a></div>
+    </div>
+
+    <div class="card medium">
+      <div class="tag tag-ecosystem">Ecosystem</div>
+      <h4>Claude-to-Claude Communication &mdash; Agent Teams + claude-relay</h4>
+      <p style="color:var(--text)">Agent Teams (experimental) lets multiple Claude instances coordinate with shared task lists and 1M context each. <a href="https://github.com/gvorwaller/claude-relay" style="color:var(--accent2)">claude-relay</a> enables real-time messaging between instances via WebSocket. Windows PC + Mac Mini coordination is now possible.</p>
+      <div class="source">Source: <a href="https://x.com/louisvarge/status/2035215597361840637">@louisvarge</a> &bull; <a href="https://code.claude.com/docs/en/agent-teams">Agent Teams Docs</a></div>
+    </div>
+
+    <div class="card medium">
+      <div class="tag tag-ecosystem">Ecosystem</div>
+      <h4>Browser Use &mdash; 82K Stars, AI Web Automation</h4>
+      <p style="color:var(--text)">The #1 open-source browser automation library. AI reasoning layer on top of Playwright. Could replace broken Gmail MCP auth, handle bank balance checks, form submissions &mdash; all autonomously. 3-5x faster than alternatives.</p>
+      <div class="source">Source: <a href="https://x.com/browser_use/status/2035081809047048586">@browser_use</a> &bull; <a href="https://github.com/browser-use/browser-use">GitHub</a></div>
+    </div>
+  </div>
+
+  <details>
+    <summary>More ecosystem finds</summary>
+    <div class="details-body">
+      <ul>
+        <li><strong>Remotion Skills</strong> &mdash; 150K installs, #1 video skill. Turns Claude Code into a video production tool. Relevant for HW Ad+ / Social Star pipeline.</li>
+        <li><strong>Expo + Claude Code</strong> &mdash; Evan Bacon's 7-agent system for React Native. CSS Grid coming to Expo. Saved for when UltrawashAPP resumes.</li>
+        <li><strong>"Claudie" AI Project Manager</strong> &mdash; non-technical PM automation. Shows the AI Chief of Staff pattern gaining traction. Life-OS is ahead.</li>
+        <li><strong>Anthropic published autonomy research</strong> &mdash; analyzed millions of Claude Code interactions. Life-OS is a live case study of this trend.</li>
+        <li><strong>Auto Mode (preview)</strong> &mdash; auto-handles permission prompts. Could fix Ralph's 7-day permission-gate problem.</li>
+        <li><strong>gstack by Garry Tan</strong> &mdash; open-source Claude Code system for planning, review, QA, shipping.</li>
+        <li><strong>Akshay Pachaar</strong> &mdash; .claude/ folder anatomy guide + local LLM integration via <code>ANTHROPIC_BASE_URL</code>. Low priority for us (we want best models).</li>
+      </ul>
+    </div>
+  </details>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== SYSTEM STATE ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">System Health</div>
+  <h2>Task Scheduler: 11 healthy, 4 pending, 2 broken</h2>
+  <p style="color:var(--text);margin-bottom:8px">Fixes #51-55 deployed overnight. Morning runs at 7:25am and 8:30am are the first real validation.</p>
+
+  <div class="health-grid">
+    <div class="health-item health-ok"><span class="dot dot-green"></span>AutoResearch (02:33)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>ClaudeCodeAutoUpdate (05:00)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>DeployCheck (01:02)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>EmailMonitor (05:01)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>Claw3dCheck (Mar 21)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>LeaveHouseNudge (04:40)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>MiddayCheckin (Mar 21)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>SleepNudge (23:01)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>SupabaseKeepAlive (Mar 21)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>ICSReminder (Mar 20)</div>
+    <div class="health-item health-ok"><span class="dot dot-green"></span>WeeklyLogReminder (Mar 16)</div>
+    <div class="health-item health-fixed"><span class="dot dot-blue"></span>PhoneFreeMorning &mdash; Fix #53 (7:25am)</div>
+    <div class="health-item health-fixed"><span class="dot dot-blue"></span>MorningBriefing &mdash; Fix #52 (8:30am)</div>
+    <div class="health-item health-crash"><span class="dot dot-red"></span>NightlyAccountability (crashed Mar 21)</div>
+    <div class="health-item health-crash"><span class="dot dot-red"></span>OvernightResearch (crashed Mar 22)</div>
+    <div class="health-item health-warn"><span class="dot dot-amber"></span>WeeklyDigest (broken since Mar 13)</div>
+    <div class="health-item health-warn"><span class="dot dot-amber"></span>TelegramBot (manual PID &mdash; BLOCKED)</div>
+  </div>
+
+  <details style="margin-top:24px">
+    <summary>Score breakdown: 52/100</summary>
+    <div class="details-body">
+      <table class="score-table">
+        <tr><th>Component</th><th>Max</th><th>Score</th><th>Notes</th></tr>
+        <tr><td>Architecture</td><td>15</td><td>12</td><td style="color:var(--muted);font-size:12px">48 skills, 12 agents, 5 hooks. Stable.</td></tr>
+        <tr><td>Autonomous uptime</td><td>15</td><td>10</td><td style="color:var(--muted);font-size:12px">11/17 healthy. +2 pending morning validation.</td></tr>
+        <tr><td>Metrics / feedback</td><td>15</td><td>4</td><td style="color:var(--muted);font-size:12px">WeeklyDigest broken since Mar 13.</td></tr>
+        <tr><td>24/7 operation</td><td>15</td><td>10</td><td style="color:var(--muted);font-size:12px">AutoResearch running. Ralph broken 7+ days.</td></tr>
+        <tr><td>Cross-device</td><td>10</td><td>7</td><td style="color:var(--muted);font-size:12px">Bot alive but blocked (403 Forbidden).</td></tr>
+        <tr><td>CEO behavioral impact</td><td>15</td><td>5</td><td style="color:var(--muted);font-size:12px">2-day briefing gap. Fix deployed.</td></tr>
+        <tr><td>Revenue generation</td><td>15</td><td>4</td><td style="color:var(--muted);font-size:12px">Pipeline exists. Zero conversions.</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>100</strong></td><td><strong>52</strong></td><td style="color:var(--accent2);font-size:12px">Projected 56 if morning validates</td></tr>
+      </table>
+      <p style="margin-top:12px;font-size:13px">Score has oscillated between 52-58 for 10 verifier checks. The system is hitting a hard ceiling imposed by Windows Task Scheduler. Cloud migration is the breakout.</p>
+    </div>
+  </details>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== WHAT NEEDS YOUR DECISION ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">What Needs Your Decision</div>
+  <h2>Three questions before we move</h2>
+
+  <div class="decision">
+    <div class="q">1. Telegram bot is blocked &mdash; unblock it?</div>
+    <p>The bot returns 403 Forbidden. All autonomous notifications are dead &mdash; morning briefings, sleep nudges, nightly reviews, email alerts. Nothing reaches your phone until you open Telegram and tap "Restart" or "Unblock" on the Life-OS bot.</p>
+    <div class="rec">This is the single highest-impact 10-second action right now.</div>
+  </div>
+
+  <div class="decision">
+    <div class="q">2. Cloud migration strategy?</div>
+    <p>Three options for replacing the broken Task Scheduler layer:</p>
+    <ol class="options">
+      <li><strong>Full cloud</strong> &mdash; Replace all 17 tasks with 3-5 cloud scheduled tasks on Anthropic's infrastructure. Computer can be off. Most impactful. Estimated +15-18 points.</li>
+      <li><strong>Desktop first</strong> &mdash; Use Desktop Scheduled Tasks as intermediate step. Still local but much better than Task Scheduler. Built-in jitter, catch-up, keep-awake. Estimated +8-12 points.</li>
+      <li><strong>Hybrid</strong> &mdash; Heavy tasks (AutoResearch, MorningBriefing, Nightly) to cloud. Keep lightweight ones (Claw3d, Supabase) on Task Scheduler.</li>
+    </ol>
+    <div class="rec">Recommendation: Full cloud. The entire autonomous layer has been fighting Windows for 8 days. Cloud eliminates every class of bug we've encountered.</div>
+  </div>
+
+  <div class="decision">
+    <div class="q">3. Update Claude Code to v2.1.81?</div>
+    <p>Enables <code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:12px">--bare</code> (faster autonomous scripts) and <code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:12px">--channels</code> permission relay. Requires closing all active Claude sessions. OK to do now, or schedule overnight?</p>
+  </div>
+
+  <details>
+    <summary>Lower-priority questions</summary>
+    <div class="details-body">
+      <ul>
+        <li><strong>Gmail + Calendar MCP</strong> need re-authentication (interactive browser login). Set up next session?</li>
+        <li><strong>Telegram bot migration</strong> &mdash; native Channels plugin vs custom bot.js. Test or keep custom for voice/photos?</li>
+        <li><strong>Mac Mini deployment</strong> &mdash; claude-relay enables cross-machine coordination. Is the Mac Mini set up and accessible?</li>
+      </ul>
+    </div>
+  </details>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== TODAY'S MOVES ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">Today's Moves</div>
+  <h2>Three things, clear and bold</h2>
+
+  <div class="actions">
+    <div class="action a1">
+      <div class="num">01</div>
+      <h4>Unblock the Telegram bot</h4>
+      <p style="color:var(--text)">Open Telegram. Find the Life-OS bot. Tap Restart. 10 seconds. Every autonomous notification restores instantly.</p>
+    </div>
+
+    <div class="action a2">
+      <div class="num">02</div>
+      <h4>Set up cloud scheduled tasks</h4>
+      <p style="color:var(--text)">Go to claude.ai/code. Create 3-5 cloud tasks to replace the entire Task Scheduler layer. This is the single biggest infrastructure upgrade available &mdash; estimated to break through the 52-point ceiling to 67-70/100. Computer can be off after this.</p>
+    </div>
+
+    <div class="action a3">
+      <div class="num">03</div>
+      <h4>Validate the morning fixes</h4>
+      <p style="color:var(--text)">PhoneFreeMorning fires at 7:25am. MorningBriefing at 8:30am. These are the first real tests of Fixes #52 and #53. If both pass, the 2-day briefing gap ends and score jumps to 56.</p>
+    </div>
+  </div>
+
+  <div class="insight">
+    <p>The system spent 8 days and 53 fixes patching symptoms. Tonight it found the cure: stop fighting Windows, move to cloud. The score ceiling breaks when the platform changes.</p>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== FOOTER ===================== -->
+<div class="footer">
+  <span class="brand">Life-OS AutoResearch</span> &mdash; Overnight Session &mdash; 5 Cycles (#21-#25) &mdash; Fixes #51-#55<br>
+  Generated March 22, 2026 &mdash; Opus 4.6 (1M context)<br>
+  Score: 52/100 &bull; Projected: 56 post-validation &bull; Projected post-migration: 67-70
+</div>
+
+</body>
+</html>

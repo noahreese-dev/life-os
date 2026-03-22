@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overnight Research — March 20, 2026</title>
+    <style>
+        :root {
+            --bg-deep: #0a0a0f;
+            --bg-layer1: #111118;
+            --bg-layer2: #1a1a24;
+            --bg-layer3: #222230;
+            --bg-card: #16161f;
+            --text-primary: #e8e6e3;
+            --text-secondary: #9b97a0;
+            --text-muted: #6b6770;
+            --accent-gold: #d4a843;
+            --accent-blue: #4a9eff;
+            --accent-green: #4ade80;
+            --accent-red: #ef4444;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #22d3ee;
+            --border: #2a2a3a;
+            --glow: rgba(212, 168, 67, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 0;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--bg-deep) 0%, #0f0f1a 50%, #1a0f1a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 168, 67, 0.08) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .hero .meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: var(--bg-layer1);
+            border-bottom: 1px solid var(--border);
+            padding: 0.75rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .nav-bar::-webkit-scrollbar { display: none; }
+
+        .nav-pill {
+            background: var(--bg-layer2);
+            color: var(--text-secondary);
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .nav-pill:hover {
+            background: var(--bg-layer3);
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        /* Section headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 3rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-number {
+            background: var(--accent-gold);
+            color: var(--bg-deep);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1rem 0 0.5rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-size: 0.92rem;
+        }
+
+        /* Finding Cards */
+        .findings-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .finding-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .finding-card:hover {
+            border-color: rgba(212, 168, 67, 0.3);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .finding-card.impact-10 { border-left: 3px solid var(--accent-gold); }
+        .finding-card.impact-9 { border-left: 3px solid var(--accent-green); }
+        .finding-card.impact-8 { border-left: 3px solid var(--accent-blue); }
+        .finding-card.impact-7 { border-left: 3px solid var(--accent-purple); }
+        .finding-card.impact-6 { border-left: 3px solid var(--accent-cyan); }
+
+        .finding-rank {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .finding-rank .rank-num {
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--bg-deep);
+            background: var(--accent-gold);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .impact-badge {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        .impact-badge.high { background: rgba(212, 168, 67, 0.2); color: var(--accent-gold); }
+        .impact-badge.medium { background: rgba(74, 158, 255, 0.2); color: var(--accent-blue); }
+        .impact-badge.good { background: rgba(74, 222, 128, 0.2); color: var(--accent-green); }
+
+        .finding-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .finding-body {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        /* Tables */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background: var(--bg-layer2);
+            color: var(--accent-gold);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid rgba(42, 42, 58, 0.5);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: rgba(212, 168, 67, 0.03);
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--bg-layer2);
+            color: var(--accent-cyan);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        pre {
+            background: var(--bg-layer1);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-secondary);
+        }
+
+        /* Action cards */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .action-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .action-card.p0 { border-top: 3px solid var(--accent-red); }
+        .action-card.p1 { border-top: 3px solid var(--accent-gold); }
+        .action-card.p2 { border-top: 3px solid var(--accent-blue); }
+        .action-card.p3 { border-top: 3px solid var(--text-muted); }
+
+        .priority-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        .priority-tag.p0 { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); }
+        .priority-tag.p1 { background: rgba(212, 168, 67, 0.2); color: var(--accent-gold); }
+        .priority-tag.p2 { background: rgba(74, 158, 255, 0.2); color: var(--accent-blue); }
+        .priority-tag.p3 { background: rgba(107, 103, 112, 0.2); color: var(--text-muted); }
+
+        .action-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .action-desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        li {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            margin-bottom: 0.3rem;
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        /* Callout boxes */
+        .callout {
+            background: var(--bg-layer2);
+            border-left: 3px solid var(--accent-gold);
+            padding: 1rem 1.25rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        .callout.insight { border-left-color: var(--accent-blue); }
+        .callout.warning { border-left-color: var(--accent-red); }
+        .callout.success { border-left-color: var(--accent-green); }
+
+        .callout p {
+            margin: 0;
+            font-size: 0.88rem;
+        }
+
+        .callout strong {
+            color: var(--text-primary);
+        }
+
+        /* Comparison grid */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .compare-col {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .compare-col h4 {
+            color: var(--accent-gold);
+            margin-top: 0;
+        }
+
+        /* Links section */
+        .links-section {
+            background: var(--bg-layer1);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .links-section h4 {
+            color: var(--accent-gold);
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+
+        .links-section a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: block;
+            padding: 0.2rem 0;
+            transition: color 0.2s;
+        }
+        .links-section a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Questions section */
+        .question-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            margin: 0.75rem 0;
+        }
+
+        .question-num {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .question-text {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.92rem;
+            margin: 0.25rem 0;
+        }
+
+        .question-context {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.6rem; }
+            .container { padding: 1rem; }
+            .compare-grid { grid-template-columns: 1fr; }
+            .action-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>Overnight Research Briefing</h1>
+    <div class="subtitle">6 Research Areas &middot; 40+ Sources &middot; 14 Actionable Recommendations</div>
+    <div class="meta">March 20, 2026 &middot; Life-OS Chief of Staff</div>
+</div>
+
+<nav class="nav-bar">
+    <a href="#findings" class="nav-pill">Key Findings</a>
+    <a href="#area1" class="nav-pill">Always-On AI</a>
+    <a href="#area2" class="nav-pill">AutoResearch</a>
+    <a href="#area3" class="nav-pill">Remote Control</a>
+    <a href="#area4" class="nav-pill">Monetization</a>
+    <a href="#area5" class="nav-pill">Voice-First</a>
+    <a href="#area6" class="nav-pill">Obsidian</a>
+    <a href="#actions" class="nav-pill">Actions</a>
+    <a href="#questions" class="nav-pill">Questions</a>
+</nav>
+
+<div class="container">
+
+    <!-- KEY FINDINGS -->
+    <div id="findings">
+        <div class="section-header">
+            <div class="section-number">!</div>
+            <h2>Key Findings (Ranked by Impact)</h2>
+        </div>
+
+        <div class="findings-grid">
+            <div class="finding-card impact-10">
+                <div class="finding-rank">
+                    <span class="rank-num">1</span>
+                    <span class="impact-badge high">IMPACT 10/10</span>
+                </div>
+                <div class="finding-title">AutoResearch Skill Exists and Is Ready to Install</div>
+                <div class="finding-body">
+                    A Claude Code plugin called <code>autoresearch</code> by Udit Goenka (30,307 GitHub stars in one week) generalizes Karpathy's overnight experiment loop to ANY domain. Install: <code>/plugin marketplace add uditgoenka/autoresearch</code>. Replaces our custom overnight-ralph.ps1. Supports cold email, landing pages, code optimization, security audits.
+                </div>
+            </div>
+
+            <div class="finding-card impact-9">
+                <div class="finding-rank">
+                    <span class="rank-num">2</span>
+                    <span class="impact-badge high">IMPACT 9/10</span>
+                </div>
+                <div class="finding-title">PAI v4.0.3 TELOS System Is the Gold Standard</div>
+                <div class="finding-body">
+                    Miessler's 10-file identity framework (MISSION, GOALS, PROJECTS, BELIEFS, MODELS, STRATEGIES, NARRATIVES, LEARNED, CHALLENGES, IDEAS) + 3-tier memory + 3,540+ signal ratings is the most sophisticated personal AI infrastructure in production. We're 80% there but missing structured goal decomposition and the rating/signal capture system.
+                </div>
+            </div>
+
+            <div class="finding-card impact-9">
+                <div class="finding-rank">
+                    <span class="rank-num">3</span>
+                    <span class="impact-badge high">IMPACT 9/10</span>
+                </div>
+                <div class="finding-title">Desktop Scheduled Tasks Replace Our PowerShell Layer</div>
+                <div class="finding-body">
+                    Claude Desktop scheduled tasks survive restarts, catch up missed runs from the last 7 days, have per-task permissions, and store prompts as editable SKILL.md files. Strictly better than our PowerShell + Windows Task Scheduler approach for autonomous operations.
+                </div>
+            </div>
+
+            <div class="finding-card impact-8">
+                <div class="finding-rank">
+                    <span class="rank-num">4</span>
+                    <span class="impact-badge medium">IMPACT 8/10</span>
+                </div>
+                <div class="finding-title">Perplexity Personal Computer = $200/mo Competitor</div>
+                <div class="finding-body">
+                    Always-on AI on Mac Mini. 19-20 models, audit trails, kill switches, 10K credits. Validates our approach but sets pricing benchmark. Our differentiation: ownership model, psychological frameworks, ADHD design. One-time setup + retainer beats $2,400/year vendor lock-in.
+                </div>
+            </div>
+
+            <div class="finding-card impact-8">
+                <div class="finding-rank">
+                    <span class="rank-num">5</span>
+                    <span class="impact-badge medium">IMPACT 8/10</span>
+                </div>
+                <div class="finding-title">Cold Email AutoResearch Loop Is Technically Feasible</div>
+                <div class="finding-body">
+                    Smartlead API supports programmatic A/B testing with multi-armed bandit distribution and webhook reply tracking. Combined with autoresearch skill: generate variants, deploy via API, collect metrics, keep winners, iterate. ~100 experiments overnight. Direct Hamilton campaign accelerator.
+                </div>
+            </div>
+
+            <div class="finding-card impact-7">
+                <div class="finding-rank">
+                    <span class="rank-num">6</span>
+                    <span class="impact-badge good">IMPACT 7/10</span>
+                </div>
+                <div class="finding-title">Agent Teams + Multi-Machine Coordination Is Real</div>
+                <div class="finding-body">
+                    Claude Code Agent Teams (experimental) + claude-code-by-agents (desktop app with @mention routing via HTTP) enables Windows PC + Mac Mini coordination. Agent Farm runs 20-50 parallel agents with lock-based file coordination.
+                </div>
+            </div>
+
+            <div class="finding-card impact-7">
+                <div class="finding-rank">
+                    <span class="rank-num">7</span>
+                    <span class="impact-badge good">IMPACT 7/10</span>
+                </div>
+                <div class="finding-title">AI Chief of Staff Market Is Tiny and Underpriced</div>
+                <div class="finding-body">
+                    Top competitor: alfred_ at $24.99/mo. None offer psychological frameworks, ADHD design, accountability tracking, or autonomous overnight work. They're glorified calendar tools. Human CoS costs $150K-$300K/year. Life-OS fills the gap between $25/mo apps and $150K/year humans.
+                </div>
+            </div>
+
+            <div class="finding-card impact-7">
+                <div class="finding-rank">
+                    <span class="rank-num">8</span>
+                    <span class="impact-badge good">IMPACT 7/10</span>
+                </div>
+                <div class="finding-title">Claudesidian/Nexus Replaces Our CDP Automation</div>
+                <div class="finding-body">
+                    Nexus MCP plugin: 2 tools replace 40+, 95% token reduction, native chat in Obsidian, local semantic search, workspace memory (sync-friendly JSONL + SQLite), inline AI editing. Far superior to our Chrome DevTools Protocol approach.
+                </div>
+            </div>
+
+            <div class="finding-card impact-6">
+                <div class="finding-rank">
+                    <span class="rank-num">9</span>
+                    <span class="impact-badge medium">IMPACT 6/10</span>
+                </div>
+                <div class="finding-title">Voice-First Is Mature</div>
+                <div class="finding-body">
+                    Claude Code native voice mode (free, 20 languages). WisprFlow ($16.99/mo) for system-wide voice at 175+ WPM. CEO's phone-first workflow already works via Remote Control + Claude iOS app.
+                </div>
+            </div>
+
+            <div class="finding-card impact-6">
+                <div class="finding-rank">
+                    <span class="rank-num">10</span>
+                    <span class="impact-badge medium">IMPACT 6/10</span>
+                </div>
+                <div class="finding-title">Self-Improving Agent Patterns Are Crystallizing</div>
+                <div class="finding-body">
+                    Four persistence channels: git commits, progress logs, task state, knowledge base. Key consensus: single-agent deep running outperforms multi-agent swarms. Our overnight-ralph is the right pattern, now formalized by the community.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AREA 1 -->
+    <div id="area1">
+        <div class="section-header">
+            <div class="section-number">1</div>
+            <h2>Always-On AI Operating Systems</h2>
+        </div>
+
+        <h3>Three-Tier Landscape (March 2026)</h3>
+
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Tier</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Key Feature</th>
+                </tr>
+                <tr>
+                    <td><strong>Platform</strong></td>
+                    <td>Perplexity Personal Computer</td>
+                    <td>$200/mo</td>
+                    <td>19-20 models, Mac Mini, 10K credits</td>
+                </tr>
+                <tr>
+                    <td><strong>Platform</strong></td>
+                    <td>Claude Cowork/Desktop</td>
+                    <td>Free (Pro/Max)</td>
+                    <td>Scheduled tasks, Remote Control</td>
+                </tr>
+                <tr>
+                    <td><strong>Framework</strong></td>
+                    <td>PAI v4.0.3 (Miessler)</td>
+                    <td>Free (OSS)</td>
+                    <td>67 skills, 333 workflows, TELOS, 3-tier memory</td>
+                </tr>
+                <tr>
+                    <td><strong>Framework</strong></td>
+                    <td>Sam Zoloth Claude OS</td>
+                    <td>~$15/mo API</td>
+                    <td>6-layer system, 10 launchd agents, 131 diary entries</td>
+                </tr>
+                <tr>
+                    <td><strong>Framework</strong></td>
+                    <td>Life-OS (ours)</td>
+                    <td>~$20/mo API</td>
+                    <td>34 skills, 10 agents, 12 autonomous tasks, Telegram tunnel</td>
+                </tr>
+                <tr>
+                    <td><strong>Tools</strong></td>
+                    <td>Agent Farm / IttyBitty / Agent Zero</td>
+                    <td>Free (OSS)</td>
+                    <td>Multi-agent orchestration, parallel processing</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>PAI vs Life-OS Comparison</h3>
+
+        <div class="compare-grid">
+            <div class="compare-col">
+                <h4>What PAI Does Better</h4>
+                <ul>
+                    <li><strong>Rating system:</strong> 3,540+ explicit 1-10 ratings feeding steering rules</li>
+                    <li><strong>TELOS:</strong> 10 structured identity files for deep context</li>
+                    <li><strong>Skill chains:</strong> 67 skills with 333 workflows that compose</li>
+                    <li><strong>Duration-aware notifications:</strong> ntfy push with escalation</li>
+                    <li><strong>Security-first:</strong> Injection detection, exfiltration prevention</li>
+                </ul>
+            </div>
+            <div class="compare-col">
+                <h4>What Life-OS Does Better</h4>
+                <ul>
+                    <li><strong>Psychological frameworks:</strong> OCTOPUS, THE-DESCENT, Jungian analysis</li>
+                    <li><strong>ADHD design:</strong> Environmental change > willpower</li>
+                    <li><strong>Accountability:</strong> Contract execution trends, pattern detection</li>
+                    <li><strong>Autonomous operations:</strong> 12 scheduled tasks, always-on</li>
+                    <li><strong>Mobile-first:</strong> Telegram tunnel, phone-first workflow</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>New Claude Code Features (Feb-Mar 2026)</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Feature</th><th>What</th><th>Impact</th></tr>
+                <tr><td><code>/loop</code></td><td>Recurring prompts on interval</td><td>Session-scoped monitoring</td></tr>
+                <tr><td>Desktop Scheduled Tasks</td><td>Persistent tasks that survive restarts</td><td>Replaces PowerShell autonomous layer</td></tr>
+                <tr><td>Agent Teams</td><td>Multi-agent coordination with shared task list</td><td>Parallel overnight work</td></tr>
+                <tr><td>Remote Control</td><td>Bridge sessions to phone/browser</td><td>Mobile-first CoS access</td></tr>
+                <tr><td>Worktrees</td><td>Isolated git worktrees per session</td><td>Safe parallel development</td></tr>
+                <tr><td>Voice Mode</td><td>20 languages, push-to-talk</td><td>Hands-free coding</td></tr>
+                <tr><td><code>/effort</code></td><td>Low/medium/high effort levels</td><td>Cost optimization per task</td></tr>
+                <tr><td><code>/memory</code></td><td>Managed auto-memory</td><td>Persistent context without manual files</td></tr>
+                <tr><td>MCP Elicitation</td><td>Interactive forms from MCP servers</td><td>Complex tool interactions</td></tr>
+                <tr><td>1M Context</td><td>Opus 4.6 default 1M window</td><td>Deeper analysis per session</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- AREA 2 -->
+    <div id="area2">
+        <div class="section-header">
+            <div class="section-number">2</div>
+            <h2>Karpathy AutoResearch Applied to Business</h2>
+        </div>
+
+        <div class="callout">
+            <p><strong>Key insight from Karpathy:</strong> "Any metric you care about that is reasonably efficient to evaluate can be autoresearched by an agent swarm."</p>
+        </div>
+
+        <h3>The Experiment Loop</h3>
+        <pre><code>1. Review current state + git history + results log
+2. Pick next change (based on what worked/failed)
+3. Make ONE focused, atomic change
+4. Commit to git before verification
+5. Run mechanical verification (tests, benchmarks, scores)
+6. If improved: keep. If not: git revert.
+7. Log results in TSV format
+8. Repeat (~12/hour, ~100 overnight)</code></pre>
+
+        <h3>Business Domain Applications</h3>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Domain</th>
+                    <th>Variables</th>
+                    <th>Metric</th>
+                    <th>Platform/API</th>
+                </tr>
+                <tr>
+                    <td>Cold Email</td>
+                    <td>Subject, personalization, CTA, length</td>
+                    <td>Reply rate</td>
+                    <td>Smartlead API + webhooks</td>
+                </tr>
+                <tr>
+                    <td>Landing Pages</td>
+                    <td>Headlines, hero, trust signals, CTA</td>
+                    <td>Conversion rate</td>
+                    <td>Vercel + Plausible/PostHog</td>
+                </tr>
+                <tr>
+                    <td>Paid Ads</td>
+                    <td>Targeting, creative, offers</td>
+                    <td>CPA / ROAS</td>
+                    <td>Meta/Google Ads API</td>
+                </tr>
+                <tr>
+                    <td>Code Quality</td>
+                    <td>Refactoring, patterns, tests</td>
+                    <td>Test coverage, bundle size</td>
+                    <td>npm test, webpack stats</td>
+                </tr>
+                <tr>
+                    <td>API Performance</td>
+                    <td>Caching, queries, indexing</td>
+                    <td>p95 latency</td>
+                    <td>Custom benchmark script</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Claude AutoResearch Skill (Install Now)</h3>
+        <pre><code>/plugin marketplace add uditgoenka/autoresearch
+/plugin install autoresearch@autoresearch</code></pre>
+
+        <p>8 commands available:</p>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Command</th><th>Purpose</th></tr>
+                <tr><td><code>/autoresearch</code></td><td>Core autonomous iteration loop</td></tr>
+                <tr><td><code>/autoresearch:plan</code></td><td>Interactive setup wizard</td></tr>
+                <tr><td><code>/autoresearch:debug</code></td><td>Autonomous bug hunter (7 investigation techniques)</td></tr>
+                <tr><td><code>/autoresearch:fix</code></td><td>Iterative error repair until zero remain</td></tr>
+                <tr><td><code>/autoresearch:security</code></td><td>STRIDE + OWASP + red-team analysis</td></tr>
+                <tr><td><code>/autoresearch:ship</code></td><td>Universal 8-phase shipping workflow</td></tr>
+                <tr><td><code>/autoresearch:scenario</code></td><td>12-dimension situation exploration</td></tr>
+                <tr><td><code>/autoresearch:predict</code></td><td>5 expert personas analyze + debate + consensus</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- AREA 3 -->
+    <div id="area3">
+        <div class="section-header">
+            <div class="section-number">3</div>
+            <h2>Remote Control + Agent Teams</h2>
+        </div>
+
+        <h3>Remote Control Architecture</h3>
+        <pre><code>Local Claude Code → outbound HTTPS → Anthropic relay → claude.ai/code / iOS / Android
+No inbound ports. Full local environment available. Pro/Max plans only.</code></pre>
+
+        <div class="callout success">
+            <p><strong>New fix:</strong> Reduced /poll rate to once per 10 minutes (was 1-2 seconds). Major battery improvement for mobile control.</p>
+        </div>
+
+        <h3>Multi-Machine Options</h3>
+        <div class="table-wrap">
+            <table>
+                <tr>
+                    <th>Tool</th>
+                    <th>Max Agents</th>
+                    <th>Multi-Machine</th>
+                    <th>Coordination</th>
+                    <th>Best For</th>
+                </tr>
+                <tr>
+                    <td>Agent Teams (native)</td>
+                    <td>2-8</td>
+                    <td>No</td>
+                    <td>Shared tasks + messaging</td>
+                    <td>Simple team workflows</td>
+                </tr>
+                <tr>
+                    <td>claude-code-by-agents</td>
+                    <td>Unlimited</td>
+                    <td>Yes (HTTP)</td>
+                    <td>@mention routing</td>
+                    <td>Our multi-machine setup</td>
+                </tr>
+                <tr>
+                    <td>Agent Farm</td>
+                    <td>20-50</td>
+                    <td>No</td>
+                    <td>Lock-based files</td>
+                    <td>Codebase-wide sweeps</td>
+                </tr>
+                <tr>
+                    <td>IttyBitty</td>
+                    <td>Unlimited</td>
+                    <td>No</td>
+                    <td>tmux dashboard</td>
+                    <td>Simple parallel spawning</td>
+                </tr>
+                <tr>
+                    <td>Claude Squad</td>
+                    <td>Multiple</td>
+                    <td>No</td>
+                    <td>tmux multiplexer</td>
+                    <td>Multi-agent terminal</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Desktop Scheduled Tasks vs /loop</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Aspect</th><th>Desktop Tasks</th><th>/loop (CLI)</th></tr>
+                <tr><td>Persistence</td><td>Survives restarts</td><td>Dies on exit</td></tr>
+                <tr><td>Missed runs</td><td>Catches up from 7 days</td><td>No catch-up</td></tr>
+                <tr><td>Expiry</td><td>None</td><td>3 days auto-delete</td></tr>
+                <tr><td>Max tasks</td><td>No limit</td><td>50 per session</td></tr>
+                <tr><td>Best for</td><td>Overnight / multi-day</td><td>Short-term monitoring</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- AREA 4 -->
+    <div id="area4">
+        <div class="section-header">
+            <div class="section-number">4</div>
+            <h2>Monetization & Packaging</h2>
+        </div>
+
+        <h3>Competitive Landscape</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Product</th><th>Price</th><th>Has Psychology</th><th>Has Accountability</th><th>Has Autonomous Ops</th></tr>
+                <tr><td>alfred_</td><td>$24.99/mo</td><td>No</td><td>No</td><td>No</td></tr>
+                <tr><td>Lindy.ai</td><td>Free-$49.99/mo</td><td>No</td><td>No</td><td>Partial</td></tr>
+                <tr><td>Motion</td><td>$19/mo</td><td>No</td><td>No</td><td>No</td></tr>
+                <tr><td>Xembly</td><td>Enterprise</td><td>No</td><td>No</td><td>Partial</td></tr>
+                <tr><td><strong>Life-OS</strong></td><td><strong>TBD</strong></td><td><strong>Yes</strong></td><td><strong>Yes</strong></td><td><strong>Yes (12 tasks)</strong></td></tr>
+            </table>
+        </div>
+
+        <div class="callout">
+            <p><strong>Gap in market:</strong> No one offers a psychologically-informed, autonomous, accountability-focused personal AI operating system. Existing tools are glorified scheduling assistants. Human CoS costs $150K-$300K/year. Life-OS fills the gap.</p>
+        </div>
+
+        <h3>Pricing Tiers</h3>
+        <div class="action-grid">
+            <div class="action-card p3">
+                <div class="priority-tag p3">TIER 1</div>
+                <div class="action-title">Template/DIY — $197-$497</div>
+                <div class="action-desc">CLAUDE.md framework, 34 skills, autonomous templates, Obsidian vault, setup guide. Self-serve.</div>
+            </div>
+            <div class="action-card p2">
+                <div class="priority-tag p2">TIER 2</div>
+                <div class="action-title">Setup Service — $2,500-$5,000</div>
+                <div class="action-desc">1-on-1 setup (2-3 hrs), customized identity, autonomous layer configured, Telegram deployed, 30-day support.</div>
+            </div>
+            <div class="action-card p1">
+                <div class="priority-tag p1">TIER 3</div>
+                <div class="action-title">Managed CoS — $1,500-$3,000/mo</div>
+                <div class="action-desc">Ongoing maintenance, weekly optimization, new skill development, priority support, upgrades included.</div>
+            </div>
+            <div class="action-card p0">
+                <div class="priority-tag p0">TIER 4</div>
+                <div class="action-title">Custom AI Agent Build — $5K-$50K</div>
+                <div class="action-desc">Full custom development, business integrations, multi-agent orchestration, production deployment. 60-70% margins.</div>
+            </div>
+        </div>
+
+        <h3>Revenue Projections</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Scenario</th><th>Monthly</th><th>Annual</th></tr>
+                <tr><td>10 templates/mo @ $297</td><td>$2,970</td><td>$35,640</td></tr>
+                <tr><td>2 setups/mo @ $3,750</td><td>$7,500</td><td>$90,000</td></tr>
+                <tr><td>5 retainers @ $2,000/mo</td><td>$10,000</td><td>$120,000</td></tr>
+                <tr><td><strong>Combined (conservative)</strong></td><td><strong>$20,470</strong></td><td><strong>$245,640</strong></td></tr>
+            </table>
+        </div>
+
+        <div class="callout insight">
+            <p><strong>Comparable data:</strong> Thomas Frank made $1M from 2 Notion templates. Easlo earns $20K/mo passive. Average creators: $1-3K/mo. AI consulting reaches $50-100K/year within 12-18 months.</p>
+        </div>
+    </div>
+
+    <!-- AREA 5 -->
+    <div id="area5">
+        <div class="section-header">
+            <div class="section-number">5</div>
+            <h2>Voice-First AI Interaction</h2>
+        </div>
+
+        <h3>Current Options</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Solution</th><th>Price</th><th>Speed</th><th>Platform</th><th>Best For</th></tr>
+                <tr><td>Claude Code /voice</td><td>Free</td><td>Good</td><td>Terminal</td><td>Coding commands</td></tr>
+                <tr><td>WisprFlow</td><td>$16.99/mo</td><td>175+ WPM</td><td>System-wide</td><td>Universal dictation</td></tr>
+                <tr><td>WhisperKit</td><td>Free (local)</td><td>Good</td><td>Apple Silicon</td><td>On-device, offline</td></tr>
+                <tr><td>Remote Control + iOS</td><td>Free (Pro/Max)</td><td>Good</td><td>Phone to desktop</td><td>Mobile-first CoS</td></tr>
+            </table>
+        </div>
+
+        <h3>Complete Voice Pipeline (Already Working)</h3>
+        <pre><code>CEO speaks on phone
+  &rarr; Claude iOS app (Remote Control)
+    &rarr; Local Claude Code on Windows PC
+      &rarr; Full tool access (filesystem, MCP, git, bash)
+        &rarr; Action executed
+          &rarr; Result sent back to phone</code></pre>
+
+        <div class="callout success">
+            <p><strong>Status:</strong> This pipeline already works with our current setup. The only addition worth considering is WisprFlow ($16.99/mo) for desktop voice dictation when at the keyboard.</p>
+        </div>
+    </div>
+
+    <!-- AREA 6 -->
+    <div id="area6">
+        <div class="section-header">
+            <div class="section-number">6</div>
+            <h2>Obsidian as Multi-Device Sync Layer</h2>
+        </div>
+
+        <h3>CDP Approach vs Nexus MCP</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Feature</th><th>Our CDP Approach</th><th>Nexus MCP</th></tr>
+                <tr><td>Token cost</td><td>Full tool calls</td><td><strong>95% reduction</strong></td></tr>
+                <tr><td>Setup</td><td>Chrome + Puppeteer</td><td><strong>npm install + config</strong></td></tr>
+                <tr><td>Reliability</td><td>Fragile (drops)</td><td><strong>Stable (direct files)</strong></td></tr>
+                <tr><td>Search</td><td>Limited</td><td><strong>Local semantic (sqlite-vec)</strong></td></tr>
+                <tr><td>Memory</td><td>None</td><td><strong>JSONL + SQLite</strong></td></tr>
+                <tr><td>Chat</td><td>No</td><td><strong>Native in Obsidian</strong></td></tr>
+                <tr><td>Inline editing</td><td>No</td><td><strong>Select text &rarr; AI transform</strong></td></tr>
+            </table>
+        </div>
+
+        <h3>Recommended Plugin Stack</h3>
+        <div class="table-wrap">
+            <table>
+                <tr><th>Plugin</th><th>Purpose</th><th>Priority</th></tr>
+                <tr><td><strong>Nexus (Claudesidian)</strong></td><td>Full Claude &harr; Obsidian bridge</td><td>P0</td></tr>
+                <tr><td>Smart Connections</td><td>RAG-powered chat with notes</td><td>P1</td></tr>
+                <tr><td>Dataview</td><td>Query notes as database</td><td>P2</td></tr>
+                <tr><td>Tasks</td><td>Task tracking with due dates</td><td>P2</td></tr>
+                <tr><td>Calendar</td><td>Visual day-log navigation</td><td>P2</td></tr>
+            </table>
+        </div>
+
+        <h3>Context Engineering Best Practices</h3>
+        <ul>
+            <li><strong>Consistent naming:</strong> <code>2026-03-20-meeting-boz.md</code></li>
+            <li><strong>YAML frontmatter:</strong> Tags, projects, status, people on every note</li>
+            <li><strong>Atomic notes:</strong> One concept per note for precise AI retrieval</li>
+            <li><strong>Wikilinks everywhere:</strong> <code>[[links]]</code> build connection context</li>
+            <li><strong>Tag taxonomy:</strong> <code>#decision #idea #meeting #research #blocker #win</code></li>
+        </ul>
+    </div>
+
+    <!-- ACTIONS -->
+    <div id="actions">
+        <div class="section-header">
+            <div class="section-number">!</div>
+            <h2>Actionable Recommendations</h2>
+        </div>
+
+        <h3>P0 — Do Today</h3>
+        <div class="action-grid">
+            <div class="action-card p0">
+                <div class="priority-tag p0">P0-1</div>
+                <div class="action-title">Install AutoResearch Plugin</div>
+                <div class="action-desc"><code>/plugin marketplace add uditgoenka/autoresearch</code> — highest-leverage single action available right now.</div>
+            </div>
+            <div class="action-card p0">
+                <div class="priority-tag p0">P0-2</div>
+                <div class="action-title">Enable Agent Teams</div>
+                <div class="action-desc">Add <code>CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1</code> to settings.json.</div>
+            </div>
+            <div class="action-card p0">
+                <div class="priority-tag p0">P0-3</div>
+                <div class="action-title">Install Nexus in Obsidian</div>
+                <div class="action-desc">Replace CDP automation with production MCP bridge. 95% token savings.</div>
+            </div>
+        </div>
+
+        <h3>P1 — This Week</h3>
+        <div class="action-grid">
+            <div class="action-card p1">
+                <div class="priority-tag p1">P1-4</div>
+                <div class="action-title">Create TELOS Identity Files</div>
+                <div class="action-desc">Adapt Miessler's 10-file structure: MISSION, GOALS, PROJECTS, BELIEFS, MODELS, STRATEGIES, NARRATIVES, LEARNED, CHALLENGES, IDEAS.</div>
+            </div>
+            <div class="action-card p1">
+                <div class="priority-tag p1">P1-5</div>
+                <div class="action-title">Migrate to Desktop Scheduled Tasks</div>
+                <div class="action-desc">Morning briefing, email monitor, deploy check, sleep nudge. Survives restarts, 7-day catch-up.</div>
+            </div>
+            <div class="action-card p1">
+                <div class="priority-tag p1">P1-6</div>
+                <div class="action-title">AutoResearch for Hamilton Emails</div>
+                <div class="action-desc">Configure Smartlead API, define reply_rate metric, build eval script, run overnight.</div>
+            </div>
+        </div>
+
+        <h3>P2 — This Month</h3>
+        <div class="action-grid">
+            <div class="action-card p2">
+                <div class="priority-tag p2">P2-7</div>
+                <div class="action-title">Build Boz Deployment Playbook</div>
+                <div class="action-desc">Document repeatable setup for Tier 2 sales ($2,500-$5,000).</div>
+            </div>
+            <div class="action-card p2">
+                <div class="priority-tag p2">P2-8</div>
+                <div class="action-title">Multi-Machine Agent Coordination</div>
+                <div class="action-desc">Set up claude-code-by-agents for Windows PC + Mac Mini.</div>
+            </div>
+            <div class="action-card p2">
+                <div class="priority-tag p2">P2-9</div>
+                <div class="action-title">Implement Rating/Signal System</div>
+                <div class="action-desc">Add 1-10 rating capture after key interactions. Steal from PAI.</div>
+            </div>
+            <div class="action-card p2">
+                <div class="priority-tag p2">P2-10</div>
+                <div class="action-title">Create Life-OS Template Package</div>
+                <div class="action-desc">Strip personal data, create onboarding guide, price at $297.</div>
+            </div>
+        </div>
+
+        <h3>P3 — This Quarter</h3>
+        <div class="action-grid">
+            <div class="action-card p3">
+                <div class="priority-tag p3">P3-11</div>
+                <div class="action-title">Launch Life-OS as Product</div>
+                <div class="action-desc">Template ($297) + Setup ($3,750) + Retainer ($2,000/mo).</div>
+            </div>
+            <div class="action-card p3">
+                <div class="priority-tag p3">P3-12</div>
+                <div class="action-title">WisprFlow Trial</div>
+                <div class="action-desc">$16.99/mo for system-wide voice dictation.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="questions">
+        <div class="section-header">
+            <div class="section-number">?</div>
+            <h2>Questions for the CEO</h2>
+        </div>
+
+        <div class="question-card">
+            <div class="question-num">Q1</div>
+            <div class="question-text">AutoResearch priority: Hamilton cold emails or Agent BTD codebase?</div>
+            <div class="question-context">The plugin is ready to install. Cold emails need Smartlead API setup. Agent BTD has immediate metrics (test coverage, performance).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-num">Q2</div>
+            <div class="question-text">Create the 10 TELOS identity files this week?</div>
+            <div class="question-context">Single highest-impact system improvement for AI context quality. Takes ~2 hours of honest self-reflection.</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-num">Q3</div>
+            <div class="question-text">Trial Perplexity Personal Computer ($200/mo)?</div>
+            <div class="question-context">Validates our approach. Ownership model (Life-OS) vs subscription model ($2,400/year).</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-num">Q4</div>
+            <div class="question-text">Migrate PowerShell autonomous layer to Desktop scheduled tasks?</div>
+            <div class="question-context">Mac Mini becomes autonomous hub. Built-in catch-up, per-task permissions, survives restarts.</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-num">Q5</div>
+            <div class="question-text">Frame Boz deployment ($12K) as the first paid Life-OS setup?</div>
+            <div class="question-context">If it goes well, the playbook becomes the Tier 2 product.</div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-num">Q6</div>
+            <div class="question-text">Add a rating system? (Thumbs up/down or 1-10 after sessions)</div>
+            <div class="question-context">PAI has 3,540+ data points feeding self-improvement. Even a simple thumbs up/down captured to MEMORY.md compounds over time.</div>
+        </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div>
+        <div class="section-header">
+            <div class="section-number">&rarr;</div>
+            <h2>Sources & Links</h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1rem;">
+            <div class="links-section">
+                <h4>Always-On AI</h4>
+                <a href="https://danielmiessler.com/blog/personal-ai-infrastructure">Miessler PAI Blog</a>
+                <a href="https://github.com/danielmiessler/Personal_AI_Infrastructure">PAI GitHub</a>
+                <a href="https://github.com/danielmiessler/Telos">TELOS Framework</a>
+                <a href="https://samzoloth.com/blog/claude-code-setup-2026">Sam Zoloth Claude OS</a>
+                <a href="https://www.perplexity.ai/hub/blog/everything-is-computer">Perplexity Personal Computer</a>
+                <a href="https://www.agent-zero.ai/">Agent Zero</a>
+            </div>
+            <div class="links-section">
+                <h4>AutoResearch</h4>
+                <a href="https://github.com/karpathy/autoresearch">Karpathy autoresearch</a>
+                <a href="https://github.com/uditgoenka/autoresearch">Claude autoresearch Skill</a>
+                <a href="https://github.com/zkarimi22/autoresearch-anything">autoresearch-anything</a>
+                <a href="https://github.com/wanshuiyin/Auto-claude-code-research-in-sleep">ARIS (Auto-Research-In-Sleep)</a>
+                <a href="https://www.mindstudio.ai/blog/karpathy-autoresearch-pattern-marketing-automation">AutoResearch for Marketing</a>
+            </div>
+            <div class="links-section">
+                <h4>Claude Code</h4>
+                <a href="https://code.claude.com/docs/en/changelog">Changelog</a>
+                <a href="https://code.claude.com/docs/en/scheduled-tasks">Scheduled Tasks Docs</a>
+                <a href="https://code.claude.com/docs/en/agent-teams">Agent Teams Docs</a>
+                <a href="https://github.com/anthropics/claude-code/releases">Releases</a>
+            </div>
+            <div class="links-section">
+                <h4>Agent Orchestration</h4>
+                <a href="https://github.com/Dicklesworthstone/claude_code_agent_farm">Agent Farm</a>
+                <a href="https://github.com/adamwulf/ittybitty">IttyBitty</a>
+                <a href="https://github.com/baryhuang/claude-code-by-agents">claude-code-by-agents</a>
+                <a href="https://github.com/smtg-ai/claude-squad">Claude Squad</a>
+                <a href="https://addyosmani.com/blog/self-improving-agents/">Self-Improving Agents</a>
+            </div>
+            <div class="links-section">
+                <h4>Monetization</h4>
+                <a href="https://get-alfred.ai/blog/best-ai-chief-of-staff-tools">AI CoS Market Overview</a>
+                <a href="https://www.snaplama.com/blog/how-to-earn-money-from-ai-agents-in-2026-complete-monetization-strategy-guide">AI Agent Monetization Guide</a>
+                <a href="https://digitalagencynetwork.com/ai-agency-pricing/">AI Agency Pricing</a>
+                <a href="https://nicklafferty.com/blog/sell-notion-templates/">Selling Notion Templates</a>
+            </div>
+            <div class="links-section">
+                <h4>Voice & Obsidian</h4>
+                <a href="https://wisprflow.ai/">WisprFlow</a>
+                <a href="https://github.com/argmaxinc/WhisperKit">WhisperKit</a>
+                <a href="https://github.com/ProfSynapse/claudesidian-mcp">Claudesidian/Nexus</a>
+                <a href="https://www.nxcode.io/resources/news/obsidian-ai-second-brain-complete-guide-2026">Obsidian AI Guide</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="footer">
+    Life-OS Chief of Staff &middot; Overnight Research Session &middot; March 20, 2026<br>
+    40+ sources analyzed &middot; 6 research areas &middot; 14 actionable recommendations
+</div>
+
+</body>
+</html>

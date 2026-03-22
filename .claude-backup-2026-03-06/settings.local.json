@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c:*)",
+      "mcp__google-workspace__gmail_users_messages_get",
+      "mcp__google-workspace__gmail_users_messages_list",
+      "mcp__google-workspace__calendar_events_list"
+    ]
+  }
+}

@@ -1,88 +1,103 @@
 # ============================================
 # Life-OS .gitignore
-# Framework (shared) vs Instance (private)
+# Public system (GitHub) vs Private data (local only)
+# Cloud scheduled tasks need: CLAUDE.md, agents, skills, METRICS.md
 # ============================================
 
-# --- PRIVATE: Personal content (never syncs) ---
+# --- PRIVATE: Personal accountability data ---
 Days/*.md
 !Days/README.md
-briefings/*.md
-briefings/*.html
-!briefings/README.md
-CLAUDE.md
-CHIEF-OF-STAFF.md
+wins.md
+waiting.md
+decisions.md
+inbox.md
+
+# --- PRIVATE: Financial data ---
+Finance/
+ACCOUNTING.md
 STATUS.md
 WEEKLY-LOG.md
-PRIORITIES.md
-ACCOUNTING.md
+
+# --- PRIVATE: People with deal values ---
+People/
+
+# --- PRIVATE: Psychology frameworks ---
 OCTOPUS.md
 THE-DESCENT.md
-MEMORIES.md
-*.DIALOGUES.md
-*.VISION*.md
-*.html
-!Agent-BTD/**/*.html
-NEGOTIATION-SKILLS.md
-DEALCRAFT.md
-BOTTLENECK.md
-AGENT-BTD.md
+THE-OCEAN.md
+NOAH-REESE-VISION.md
 GCH.md
+BOTTLENECK.md
 
-# --- PRIVATE: Personal agents (instance-specific projects) ---
-.claude/agents/daily-ops.md
-.claude/agents/personas.md
-.claude/agents/meta.md
+# --- PRIVATE: Deal tactics ---
+Learning/DEALCRAFT.md
+Learning/NEGOTIATION-SKILLS.md
+Projects/Boz-Agentic-App.md
 
-# --- PRIVATE: Machine-specific config ---
-.claude/config.local.json
-.claude/settings.local.json
-.claude/scheduled_tasks.lock
+# --- PRIVATE: Briefings (contain personal data) ---
+briefings/daily-ops/
+briefings/im-business/
+briefings/alchemy/
+briefings/handoff-latest.md
+briefings/urgent.md
+briefings/completed.md
+briefings/activity.log
+# Keep singularity HTML for demos
+briefings/singularity/*.md
+
+# --- PRIVATE: Credentials and tokens ---
 .claude/telegram/.env
 .claude/telegram/state.json
 .claude/telegram/queue.json
+.claude/telegram/.bot.pid
+.claude/telegram/.heartbeat
+.claude/telegram/.session
 .claude/telegram/bot.log
+.claude/telegram/bot-fresh.log
+.claude/telegram/photos/
+.claude/telegram/.last_processed_id
+.claude/telegram/queue.json.tmp
+.claude/channels/
+Tools/mac-mini-deploy/gws/
+Tools/google-workspace-cli/
+Tools/mac-mini-deploy/gws/
+Tools/mac-mini-deploy/.mcp.json
+
+# --- PRIVATE: Autonomous logs ---
 .claude/autonomous/logs/
 
-# --- PRIVATE: Node dependencies (reinstall per machine) ---
-node_modules/
-.claude/telegram/node_modules/
+# --- PRIVATE: Large media files ---
+Projects/ICS/IMG_2895.MOV
+Projects/ICS/video-frames/
 
-# --- PRIVATE: Transfer staging ---
-transfer/
-
-# --- PRIVATE: Project metadata with personal content ---
-AFF/
-Garage33/
-Hardware\ Ad\ +/
-Finance\ WIth\ Dan/
-ImageDesignAPP/
-IntelligenceMastersWebsite/
-UltrawashAPP/
-# Agent-BTD: game code tracked; build artifacts via Agent-BTD/.gitignore
-IDEAS/
-
-# --- PRIVATE: Personal research & campaigns ---
-hamilton-campaign/
-toronto-move/
-meditations/
-LOS.pdf
-NOAH-REESE-VISION.md
-IMAM-ALI-PERSONA-RESEARCH.md
-IMAM-HASSAN-PERSONA-RESEARCH.md
-VISION-SCAN-001.md
-bash_aliases.txt
-transfer.zip
-desktop.ini
-.claude-backup-*/
-.claude/telegram/.last_processed_id
-.claude/telegram/test-*.js
-.claude/telegram/test-*.ps1
+# --- PRIVATE: Machine-specific config ---
+.claude/settings.local.json
+.claude/config.local.json
 .claude/config.ps1
 
-# --- PRIVATE: Agent research ---
-# agent-research/
+# --- PRIVATE: Project-specific folders with client data ---
+Projects/toronto-move/
+Projects/hamilton-campaign/
 
-# --- PRIVATE: OS/IDE artifacts ---
+# --- PRIVATE: Obsidian config ---
+.obsidian/
+
+# --- PRIVATE: Misc personal ---
+meditations/
+Health/
+Archive/
+HOME.md
+CHIEF-OF-STAFF.md
+PRIORITIES.md
+
+# --- SYSTEM: Build artifacts ---
+node_modules/
+.claude/telegram/node_modules/
+.vercel/
+*.log
+bash.exe.stackdump
+.mcp.json
+transfer/
 .DS_Store
 Thumbs.db
 *.swp
@@ -90,3 +105,24 @@ Thumbs.db
 *~
 .vscode/
 .playwright-mcp/
+desktop.ini
+LOS.pdf
+transfer.zip
+bash_aliases.txt
+Untitled.canvas
+"Days/Untitled 1.base"
+Days/Untitled.base
+
+# --- PUBLIC: The OS itself (what cloud tasks need) ---
+# CLAUDE.md - YES push (system instructions)
+# METRICS.md - YES push (scoring framework, no personal values)
+# .claude/agents/ - YES push (all agent definitions)
+# .claude/skills/ - YES push (all skill definitions)
+# .claude/hooks/ - YES push (hook scripts)
+# .claude/autonomous/*.ps1 - YES push (script templates)
+# Tools/ - YES push (minus credentials)
+# Templates/ - YES push
+# Projects/ICS/*.md - YES push (research, no deal values)
+# briefings/singularity/*.html - YES push (demo-worthy)
+# briefings/BRIEFING-INDEX.md - YES push
+# briefings/README.md - YES push

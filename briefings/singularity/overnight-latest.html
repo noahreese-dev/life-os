@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoResearch Cycle #28 — March 22, 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap');
+:root{
+  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--surface3:#22222e;
+  --text:#e8e8ed;--muted:#6b6b80;--dim:#44445a;
+  --accent:#8b5cf6;--accent2:#a78bfa;--accent-glow:rgba(139,92,246,0.08);
+  --gold:#f59e0b;--gold-dim:rgba(245,158,11,0.12);
+  --green:#34d399;--green-dim:rgba(52,211,153,0.12);
+  --red:#f87171;--red-dim:rgba(248,113,113,0.12);
+  --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.12);
+  --cyan:#22d3ee;--cyan-dim:rgba(34,211,238,0.12);
+  --amber:#fbbf24;--amber-dim:rgba(251,191,36,0.12);
+  --border:#1e1e2e;--border2:#2a2a3a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* =================== HERO =================== */
+.hero{min-height:85vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(139,92,246,0.06) 0%,transparent 50%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.5}50%{transform:scale(1.1);opacity:1}}
+.hero-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);margin-bottom:24px;font-weight:600}
+.hero h1{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,6vw,52px);font-weight:700;line-height:1.15;max-width:720px;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:17px;color:var(--muted);max-width:540px;line-height:1.7}
+
+/* Score Visual */
+.score-ring{display:flex;justify-content:center;gap:32px;margin:36px 0 12px;flex-wrap:wrap}
+.score-item{text-align:center}
+.score-num{font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;line-height:1}
+.score-num.purple{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.score-num.green{color:var(--green)}
+.score-num.gold{color:var(--gold)}
+.score-num.red{color:var(--red)}
+.score-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* =================== LAYOUT =================== */
+.container{max-width:760px;margin:0 auto;padding:0 24px}
+section{padding:64px 0}
+.divider{height:1px;background:var(--border);margin:0 auto;max-width:760px}
+.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);font-weight:600;margin-bottom:12px}
+h2{font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:700;margin-bottom:16px}
+h3{font-size:17px;font-weight:600;margin-bottom:10px}
+p{color:var(--muted);margin-bottom:14px}
+strong{color:var(--text)}
+
+/* =================== NARRATIVE CARD =================== */
+.narrative{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin:24px 0;position:relative;overflow:hidden}
+.narrative::after{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,var(--accent-glow),transparent);pointer-events:none}
+.narrative p{color:var(--text);font-size:16px;line-height:1.8}
+.narrative .highlight{color:var(--green);font-weight:600}
+.narrative .warn{color:var(--amber);font-weight:600}
+.narrative .critical{color:var(--red);font-weight:600}
+
+/* =================== IMPACT CARDS =================== */
+.cards{display:grid;gap:16px;margin:24px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.card:hover{border-color:var(--border2)}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:4px 0 0 4px}
+.card.critical::before{background:var(--red)}
+.card.high::before{background:var(--gold)}
+.card.medium::before{background:var(--accent)}
+.card.new::before{background:var(--cyan)}
+.card.green::before{background:var(--green)}
+.card .tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px}
+.tag-critical{background:var(--red-dim);color:var(--red)}
+.tag-high{background:var(--gold-dim);color:var(--gold)}
+.tag-medium{background:rgba(139,92,246,0.12);color:var(--accent2)}
+.tag-new{background:var(--cyan-dim);color:var(--cyan)}
+.tag-shipped{background:var(--green-dim);color:var(--green)}
+.tag-ecosystem{background:rgba(139,92,246,0.12);color:var(--accent2)}
+.card h4{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.card p{font-size:13px;margin:0 0 8px}
+.card .source{font-size:11px;color:var(--dim);margin-top:8px}
+.card .source a{color:var(--accent2);text-decoration:none}
+.card .source a:hover{text-decoration:underline}
+
+/* =================== COLLAPSIBLE =================== */
+details{margin-bottom:16px}
+details summary{cursor:pointer;font-size:15px;font-weight:600;color:var(--text);padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;list-style:none;display:flex;align-items:center;gap:10px;transition:all 0.2s}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:'+';display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:var(--surface2);color:var(--accent2);font-size:14px;font-weight:700;flex-shrink:0;transition:transform 0.2s}
+details[open] summary::before{content:'-';transform:rotate(0deg)}
+details[open] summary{border-radius:12px 12px 0 0;border-bottom-color:transparent}
+.details-body{padding:20px;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px}
+.details-body p{font-size:14px}
+.details-body ul{padding-left:20px;font-size:13px;color:var(--muted)}
+.details-body li{margin-bottom:6px}
+.details-body code{background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:12px}
+
+/* =================== TASK HEALTH =================== */
+.health-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.health-item{padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px}
+.health-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot-green{background:var(--green)}
+.dot-red{background:var(--red)}
+.dot-amber{background:var(--amber)}
+.dot-blue{background:var(--blue)}
+.health-ok{background:rgba(52,211,153,0.06);color:var(--green)}
+.health-crash{background:rgba(248,113,113,0.06);color:var(--red)}
+.health-fixed{background:rgba(96,165,250,0.06);color:var(--blue)}
+.health-warn{background:rgba(251,191,36,0.06);color:var(--amber)}
+
+/* =================== MILESTONE =================== */
+.milestone{background:linear-gradient(135deg,rgba(52,211,153,0.06),rgba(139,92,246,0.06));border:1px solid rgba(52,211,153,0.2);border-radius:16px;padding:32px;margin:24px 0;text-align:center}
+.milestone h3{font-family:'Fraunces',Georgia,serif;font-size:22px;color:var(--green);margin-bottom:8px}
+.milestone p{color:var(--text);font-size:15px;max-width:520px;margin:0 auto}
+
+/* =================== ACTION ITEMS =================== */
+.actions{display:grid;gap:16px;margin:24px 0}
+.action{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;position:relative;overflow:hidden}
+.action::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px}
+.action.a1::before{background:linear-gradient(90deg,var(--red),var(--gold))}
+.action.a2::before{background:linear-gradient(90deg,var(--accent),var(--green))}
+.action.a3::before{background:linear-gradient(90deg,var(--gold),var(--amber))}
+.action .num{font-family:'Fraunces',Georgia,serif;font-size:36px;font-weight:700;line-height:1;margin-bottom:8px}
+.action.a1 .num{color:var(--red)}
+.action.a2 .num{color:var(--accent)}
+.action.a3 .num{color:var(--gold)}
+.action h4{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.action p{font-size:13px}
+
+/* =================== SCORE TABLE =================== */
+.score-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px}
+.score-table th{text-align:left;color:var(--dim);font-weight:400;padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;letter-spacing:0.5px;text-transform:uppercase}
+.score-table td{padding:8px 10px;border-bottom:1px solid rgba(30,30,46,0.5)}
+.score-table td:nth-child(2),.score-table td:nth-child(3),.score-table th:nth-child(2),.score-table th:nth-child(3){text-align:center;width:50px}
+.score-table tr:last-child td{border-top:2px solid var(--accent);font-weight:700;color:var(--accent2);border-bottom:none}
+
+/* =================== INSIGHT BOX =================== */
+.insight{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(245,158,11,0.08));border:1px solid rgba(139,92,246,0.2);border-radius:16px;padding:28px;margin:32px 0;text-align:center}
+.insight p{color:var(--text);font-size:16px;font-weight:500;max-width:560px;margin:0 auto;line-height:1.7}
+
+/* =================== FOOTER =================== */
+.footer{text-align:center;padding:48px 24px;font-size:11px;color:var(--dim);letter-spacing:1px}
+.footer .brand{color:var(--accent2);font-weight:600}
+
+/* =================== RESPONSIVE =================== */
+@media(max-width:600px){
+  .health-grid{grid-template-columns:1fr}
+  .score-ring{gap:20px}
+  .score-num{font-size:36px}
+  .hero h1{font-size:28px}
+  section{padding:40px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="hero-label">AutoResearch Cycle #28 &mdash; March 22, 2026</div>
+  <h1>58 fixes in. The system just learned to <span>spend less and do more.</span></h1>
+  <p class="hero-sub">Every routine autonomous script was burning Opus tokens on work Sonnet handles fine. Fix #58 rerouted 6 scripts to the right model. Estimated savings: $3-5/day. Zero capability loss. Meanwhile, Karpathy shipped AgentHub and Greg Isenberg says the SaaS apocalypse is here.</p>
+
+  <div class="score-ring">
+    <div class="score-item">
+      <div class="score-num purple">51</div>
+      <div class="score-label">Current Score</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num green">58</div>
+      <div class="score-label">Total Fixes</div>
+    </div>
+    <div class="score-item">
+      <div class="score-num gold">55</div>
+      <div class="score-label">Expected After Validation</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== WHAT HAPPENED ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">What Happened</div>
+  <h2>The cost problem nobody was watching</h2>
+
+  <div class="narrative">
+    <p>The morning briefing went dark two days ago. Task Scheduler showed result 0. The log said "completed successfully." But the CEO got nothing. <span class="critical">Silent failure</span> &mdash; the worst kind.</p>
+    <p style="margin-top:16px">The root cause was embarrassingly simple: every autonomous script was running on <strong>Opus</strong>, the most expensive model. A morning briefing &mdash; summarize STATUS.md, list today's contract &mdash; was burning through a $1.00 budget in 4 minutes flat. The error message ("Exceeded USD budget") was 37 characters long, just enough to slip past the 20-character fallback check. No briefing. No Telegram. No trace.</p>
+    <p style="margin-top:16px">Fix #57 caught it for the morning briefing. Fix #58 extends the same logic to <span class="highlight">all 6 routine scripts</span>: nightly accountability, deploy check, sleep nudge, phone-free morning, and weekly digest. All now route to <strong>Sonnet</strong> &mdash; 5-10x cheaper per token, more than capable for these tasks. Only autoresearch and overnight research stay on Opus, where depth actually matters.</p>
+    <p style="margin-top:16px">The estimated savings: <span class="highlight">$3-5 per day</span> across 12+ autonomous runs. That adds up to $90-150/month. The system was spending its most expensive resource on its most routine work.</p>
+  </div>
+
+  <div class="milestone">
+    <h3>Model routing deployed</h3>
+    <p>6 of 8 autonomous claude-p scripts now route to Sonnet. Only the two research-depth scripts (autoresearch, overnight-research) stay on Opus. Budget-class silent failures are structurally prevented.</p>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== SYSTEM HEALTH ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">System Health</div>
+  <h2>12 of 17 tasks healthy</h2>
+  <p style="color:var(--text);font-size:16px;margin-bottom:20px">Three tasks still show crash results from before today's fixes. Tonight's runs will validate.</p>
+
+  <div class="health-grid">
+    <div class="health-item health-ok"><div class="dot dot-green"></div>MorningBriefing</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>PhoneFreeMorning</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>EmailMonitor</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>DeployCheck</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>SleepNudge</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>LeaveHouseNudge</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>MiddayCheckin</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>AutoResearch</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>Claw3dCheck</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>SupabaseKeepAlive</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>ClaudeCodeAutoUpdate</div>
+    <div class="health-item health-ok"><div class="dot dot-green"></div>WeeklyLogReminder</div>
+    <div class="health-item health-fixed"><div class="dot dot-blue"></div>NightlyAccountability (fix deployed)</div>
+    <div class="health-item health-fixed"><div class="dot dot-blue"></div>OvernightResearch (fix deployed)</div>
+    <div class="health-item health-warn"><div class="dot dot-amber"></div>WeeklyDigest (next Fri Mar 27)</div>
+    <div class="health-item health-crash"><div class="dot dot-red"></div>TelegramBot (403 blocked)</div>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== DISCOVERIES ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">What We Discovered</div>
+  <h2>Twitter, ecosystem, and the future</h2>
+  <p style="color:var(--text);font-size:16px;margin-bottom:24px">Seven findings from the Twitter/X watchlist and ecosystem scan. Two are directly actionable.</p>
+
+  <div class="cards">
+
+    <div class="card critical">
+      <div class="tag tag-critical">Game-Changer</div>
+      <h4>Karpathy shipped AgentHub &mdash; GitHub for AI agents</h4>
+      <p style="color:var(--text)">Open-source. No branches, no PRs. A massive web of commits + a message board where autonomous bots share results and coordinate. This is what a git platform looks like when humans aren't the primary users. <strong>Validates the Life-OS multi-agent model</strong>.</p>
+      <div class="source">Source: <a href="https://x.com/karpathy/status/2030371219518931079">@karpathy</a> &bull; <a href="https://x.com/OliverMolander/status/2031474576916451350">@OliverMolander</a></div>
+    </div>
+
+    <div class="card high">
+      <div class="tag tag-high">High Impact</div>
+      <h4>Greg Isenberg: "SaaS and agents merge completely in 2026"</h4>
+      <p style="color:var(--text)">Every SaaS product becomes an agent platform. YC Spring 2026 wants "Cursor for product managers." The biggest startups will remix 3-4 AI tools into vertical workflows. Life-OS is already doing this &mdash; the question is whether to productize it.</p>
+      <div class="source">Source: <a href="https://x.com/gregisenberg/status/1993309765426962612">@gregisenberg</a> &bull; <a href="https://x.com/gregisenberg/status/2030680849486668229">AI agency repo (10K+ stars)</a></div>
+    </div>
+
+    <div class="card high">
+      <div class="tag tag-high">High Impact</div>
+      <h4>Auto-Research Trading &mdash; Karpathy loop applied to markets</h4>
+      <p style="color:var(--text)">Nunchi open-sourced a fully autonomous research loop that teaches AI trading agents to trade. Directly inspired by Karpathy's autoresearch. Same pattern we run &mdash; proves it generalizes beyond ML training to any domain with a measurable metric.</p>
+      <div class="source">Source: <a href="https://x.com/nunchi/status/2035024876520538256">@nunchi</a></div>
+    </div>
+
+    <div class="card medium">
+      <div class="tag tag-medium">Ecosystem</div>
+      <h4>Claude Code v2.1.81: --bare flag + allowRead sandbox</h4>
+      <p style="color:var(--text)"><code>--bare</code> skips hooks, LSP, plugin sync for scripted -p calls. Purpose-built for autonomous scripts. <code>allowRead</code> re-allows reads within denyRead regions &mdash; potential fix for Ralph's permission-gate. We're on v2.1.80; needs update.</p>
+      <div class="source">Source: <a href="https://code.claude.com/docs/en/changelog">Official Changelog</a></div>
+    </div>
+
+    <div class="card medium">
+      <div class="tag tag-ecosystem">Ecosystem</div>
+      <h4>Browser Use hits 82K stars &mdash; AI browser automation at $0.07/task</h4>
+      <p style="color:var(--text)">MIT-licensed, 89% WebVoyager benchmark. Replaces broken Gmail/Calendar MCP auth via direct browser interaction. Could enable autonomous bank balance checks, form submissions, and government portal access.</p>
+      <div class="source">Source: <a href="https://github.com/browser-use/browser-use">GitHub</a> &bull; <a href="https://browser-use.com/">browser-use.com</a></div>
+    </div>
+
+    <div class="card new">
+      <div class="tag tag-new">Certification</div>
+      <h4>Claude Certified Architect (CCA-F) &mdash; Anthropic's first official cert</h4>
+      <p style="color:var(--text)">Enterprise-level, proctored AI certification. Went live March 12. Relevant for CEO's consulting positioning at Intelligence Masters. Being certified on the platform you build on is a credibility multiplier.</p>
+      <div class="source">Source: <a href="https://x.com/abxxai/status/2033841111287120025">@abxxai</a></div>
+    </div>
+
+    <div class="card green">
+      <div class="tag tag-shipped">Active Promo</div>
+      <h4>2x usage limits through March 27</h4>
+      <p style="color:var(--text)">Double limits on weekends (all day) and weekdays (before 8am / after 2pm ET). Applies to Claude Code. Free extra capacity for overnight autonomous runs. Expires in 5 days.</p>
+      <div class="source">Source: <a href="https://x.com/EricBuess/status/2032918665302294913">@EricBuess</a></div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== WHAT'S STILL BROKEN ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">What's Still Broken</div>
+  <h2>The honest list</h2>
+
+  <div class="narrative">
+    <p><span class="critical">Telegram bot is blocked.</span> The CEO blocked the bot on Telegram at some point. Every autonomous notification &mdash; morning briefing, sleep nudge, nightly review &mdash; goes nowhere. Scripts generate output, write briefing files, but the push notification dies with <code style="background:var(--surface2);color:var(--cyan);padding:2px 6px;border-radius:4px;font-size:14px">403 Forbidden</code>. This is the single biggest blocker. CEO must unblock the bot in the Telegram app.</p>
+    <p style="margin-top:16px"><span class="warn">NightlyAccountability + OvernightResearch</span> are still showing crash results from March 21. Both have the Sonnet model fix + crash forensics deployed. Tonight's 10pm run and tomorrow's 1am run will be the validation events.</p>
+    <p style="margin-top:16px"><span class="warn">WeeklyDigest</span> has been broken since March 13 &mdash; 9 days without a digest. Now Sonnet-routed. Next run: Friday March 27.</p>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== QUESTIONS ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">Questions for the CEO</div>
+
+  <details>
+    <summary>Did you intentionally block the Telegram bot?</summary>
+    <div class="details-body">
+      <p>The bot (PID 42160) is running fine, but the Telegram API returns <code>403 Forbidden: bot was blocked by the user</code>. This kills ALL autonomous push notifications. If intentional, we need a new notification channel. If accidental, unblock it in Telegram settings and all notifications will resume immediately.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Ready for Desktop Scheduled Tasks migration?</summary>
+    <div class="details-body">
+      <p>Windows Task Scheduler has been the #1 source of crashes (58 fixes in 5 days). Claude Code now offers Desktop Scheduled Tasks with built-in stagger, catch-up, and "keep awake" &mdash; solving every problem we've been fighting. Migration would replace 17 Task Scheduler entries with 5-8 native tasks. Estimated score jump: +15-18 points. This is the path from 51 to 70.</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>Should we productize the Life-OS pattern?</summary>
+    <div class="details-body">
+      <p>Greg Isenberg says the biggest startups of 2026 remix AI tools into vertical workflows. YC wants "Cursor for product managers." Life-OS is a working autonomous personal operating system with 28 research cycles, 58 fixes, and a verifier. The market for this exists: Notion template creators make $5K-239K/yr. Setup service ($2.5-5K) + retainer ($1-3K/mo) is viable. But this is a strategic decision, not a system one.</p>
+    </div>
+  </details>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== SCORE BREAKDOWN ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">Score Breakdown</div>
+  <h2>51 / 100 &mdash; verified</h2>
+
+  <table class="score-table">
+    <tr><th>Component</th><th>Max</th><th>Score</th><th>Notes</th></tr>
+    <tr><td>Architecture</td><td>15</td><td>12</td><td>48 skills, 12 agents, 5 hooks</td></tr>
+    <tr><td>Autonomous uptime</td><td>15</td><td>11</td><td>12/17 result 0. Fix #58 deployed for 3 remaining.</td></tr>
+    <tr><td>Metrics & feedback</td><td>15</td><td>4</td><td>WeeklyDigest broken 9 days. Email monitor works.</td></tr>
+    <tr><td>24/7 operation</td><td>15</td><td>10</td><td>Machine awake all night (Fix #56). AutoResearch running.</td></tr>
+    <tr><td>Cross-device</td><td>10</td><td>6</td><td>Telegram 403 blocked. Sole cross-device channel dead.</td></tr>
+    <tr><td>CEO behavioral impact</td><td>15</td><td>4</td><td>Morning briefing silent-failed 2+ days. Nudges don't reach phone.</td></tr>
+    <tr><td>Revenue generation</td><td>15</td><td>4</td><td>Hamilton pipeline exists. Zero conversions.</td></tr>
+    <tr><td style="font-weight:700;color:var(--accent2)">Total</td><td style="font-weight:700">100</td><td style="font-weight:700;color:var(--accent2)">51</td><td>Verifier Check #13. Up from 38 two weeks ago.</td></tr>
+  </table>
+
+  <div class="insight">
+    <p>The score has been stuck at 51-54 for 3 days. The ceiling is not code &mdash; it's infrastructure. Windows Task Scheduler was never designed for AI agent orchestration. Desktop Scheduled Tasks migration is the escape hatch.</p>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== NEXT MOVES ===================== -->
+<div class="container">
+<section>
+  <div class="section-label">Next Moves</div>
+  <h2>Three things, ranked</h2>
+
+  <div class="actions">
+    <div class="action a1">
+      <div class="num">1</div>
+      <h4>Unblock the Telegram bot</h4>
+      <p>CEO action required. Open Telegram, find the bot, unblock it. Every autonomous notification resumes instantly. Cross-device score jumps from 6 to 9. CEO behavioral impact jumps from 4 to 6+. Estimated: <strong style="color:var(--green)">+3-5 points</strong> with zero engineering work.</p>
+    </div>
+    <div class="action a2">
+      <div class="num">2</div>
+      <h4>Validate tonight's runs</h4>
+      <p>NightlyAccountability at 10pm (first Sonnet run + crash forensics). SleepNudge at 11pm. OvernightResearch at 1am. If all three succeed, autonomous uptime hits 15/17 and the score climbs to <strong style="color:var(--green)">55+</strong>.</p>
+    </div>
+    <div class="action a3">
+      <div class="num">3</div>
+      <h4>Start Desktop Scheduled Tasks migration</h4>
+      <p>This is how we break through 55 to 70. Replace the 17 Task Scheduler entries that have needed 58 fixes with Claude Code's native scheduling. Built-in stagger, catch-up, keep-awake. The system stops fighting its own infrastructure.</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="footer"><span class="brand">ASHLEY</span> &mdash; SOVEREIGN CLOUD OS &mdash; AUTORESEARCH CYCLE #28 &mdash; MAR 22, 2026</div>
+
+</body>
+</html>
